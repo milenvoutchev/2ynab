@@ -1,0 +1,18 @@
+{
+  "name": "db2ynab",
+  "version": "0.0.1",
+  "dependencies": {
+    "csv": "^2.0.0",
+    "csv-parse": "^2.0.0",
+    "jfile": "^1.1.12",
+    "line-by-line": "^0.1.5",
+    "yargs": "^10.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^4.11.0",
+    "eslint-plugin-node": "^5.2.1"
+  },
+  "engines": {
+    "node": ">=8.8.0"
+  }
+}
