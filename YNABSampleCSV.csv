@@ -1,0 +1,20 @@
+Date,Payee,Category,Memo,Outflow,Inflow
+07/25/10,Sample Payee,,Sample Memo for an outflow,100.00,
+07/26/10,Sample Payee 2,,Sample memo for an inflow,,500.00
+
+INSTRUCTIONS: 1) Make your transactions look like the sample transactions above. (Those are just examples that you can delete) ,,,,,
+(Every field can be left blank except the date. Valid date formats:
+  DD/MM/YY
+  DD/MM/YYYY
+  DD/MM//YYYY
+  MM/DD/YY
+  MM/DD/YYYY
+  MM/DD//YYYY
+2) (Don't forget to delete all of these instructions from the file before you try to import it).,,,,,
+3) Save this file.,,,,,
+4) Shut down the program you're using to edit this file.,,,,,
+5) Import this file into YNAB.,,,,,
+
+
+Date,Payee,Category,Memo,Outflow,Inflow
+26/09/2017,"MYPROTEIN.COM NORTHWICH",,,55.99,

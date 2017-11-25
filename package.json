@@ -4,8 +4,8 @@
   "dependencies": {
     "csv": "^2.0.0",
     "csv-parse": "^2.0.0",
-    "jfile": "^1.1.12",
-    "line-by-line": "^0.1.5",
+    "csv-stringify": "^2.0.0",
+    "stream-transform": "^1.0.0",
     "yargs": "^10.0.3"
   },
   "devDependencies": {
