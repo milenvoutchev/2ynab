@@ -5,7 +5,10 @@ DeutscheBank to YNAB CSV converter
 A Node.js® tool to convert bank statements from Deutsche Bank's CSV format into that required for importing into YNAB4.
 
 ## Requirements
-A running Node.js environment (http://lmgtfy.com/?q=install+node)
+- A running Node.js environment (http://lmgtfy.com/?q=install+node)
+
+## Installation
+- Clone the script's repository in a local folder (http://lmgtfy.com/?q=clone+a+github+repository)
 
 ## Usage
 
