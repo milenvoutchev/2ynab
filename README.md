@@ -1,5 +1,5 @@
 # db2ynab
-DeutscheBank to YNAB Converter
+DeutscheBank to YNAB CSV converter
 
 ## Purpose
 A Node.js® tool to convert bank statements from Deutsche Bank's CSV format into that required for importing into YNAB4.
