@@ -4,7 +4,7 @@ MasterCard 1234 1234 1234 1234 NAME NAME
 Abrechnungsdatum: 31.01.2017
 Belegdatum;Eingangstag;Verwendungszweck;Fremdwährung;Betrag;Kurs;Betrag;Währung
 01.01.2017;01.01.2017;Transaction description;;;;- 12,34;EUR
-02.01.2017;02.01.2017;Transaction description;;;;- 12,34;EUR
+02.01.2017;02.01.2017;Transaction description;;;;12,34;EUR
 03.01.2017;03.01.2017;Transaction description;USD;- 123,45;1,00000;- 123,45;EUR
-03.01.2017;03.01.2017;Transaction description;USD;- 123,45;1,00000;- 123,45;EUR
+03.01.2017;03.01.2017;Transaction description;USD;123,45;1,00000;123,45;EUR
 Saldo:;;;;;;-123,45;EUR

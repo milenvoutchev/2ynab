@@ -1,11 +1,12 @@
-#!/usr/bin/env node
 const argv = require('yargs').argv;
-const csv = require('csv');
 const fs = require('fs');
-const util = require('util');
 const parse = require('csv-parse/lib/sync');
 const transform = require('stream-transform');
 const stringify = require('csv-stringify');
+
+const defaultSettings = {
+  outFile: 'converted.csv',
+};
 
 // Check input
 const inFile = argv['in'] || argv['_'][0];
@@ -14,24 +15,33 @@ if (!fs.existsSync(inFile)) {
   return 0;
 }
 
+const outFile = argv['out'] || argv['_'][1] || defaultSettings.outFile;
+
+const getLines = data => (data.match(/\r?\n/g) || '').length + 1;
+
 // convert methods
 const getSlicedInput = input => input.split('\n').slice(5, -2).join('\n');
 
 const getInput = function (inFile) {
   const options = {
-    encoding: 'latin1',
-    skip_empty_lines: true,
-    skip_lines_with_empty_values: true
+    encoding: 'latin1'
   };
+
   const data = fs.readFileSync(inFile, options);
+  console.log(`Lines: ${getLines(data)}`);
+
   return getSlicedInput(data);
 };
 
 const convert = function (inFile) {
+  console.log(`In: ${inFile}`);
+
   const input = getInput(inFile);
 
   const settings = {
     delimiter: ';',
+    skip_empty_lines: true,
+    skip_lines_with_empty_values: true,
     columns: [
       'date_document',
       'date_receipt',
@@ -45,44 +55,49 @@ const convert = function (inFile) {
   };
   const data = parse(input, settings);
 
-  // console.log('data', data);
+  console.log(`Transform: ${data.length}`);
 
-  const stringifierSettings = {
-    header: true,
-    delimiter: ',',
-    columns: [
-      'Date',
-      'Payee',
-      'Category',
-      'Memo',
-      'Outflow',
-      'Inflow'
-    ],
-  };
-  const stringifier = stringify(stringifierSettings)
-
-  const results = [];
-
-  transform(data, function (data) {
-    const amount = data.amount.replace(' ', '').replace(',', '.') * 1;
-    const result = [
-      data.date_document,
-      data.comment,
-      '',
-      '',
-      Math.min(amount, 0),
-      Math.max(amount, 0)
-    ];
-    // console.log(result);
-    return result;
-  }).pipe(stringifier)
-    .on('data', buf => results.push(buf.toString()))
-    .on('end', () => {
-
-      console.log(results.join(''));
+  const transformAsync = (data) => new Promise(function (resolve, reject) {
+    const stringifierSettings = {
+      header: true,
+      delimiter: ',',
+      columns: [
+        'Date',
+        'Payee',
+        'Category',
+        'Memo',
+        'Outflow',
+        'Inflow'
+      ],
+    };
+    const results = [];
+    const stringifier = stringify(stringifierSettings);
+    transform(data, function (data) {
+      const amount = data.amount.replace(' ', '').replace(',', '.') * 1;
+      const result = [
+        data.date_document,
+        data.comment,
+        '',
+        '',
+        Math.min(amount, 0),
+        Math.max(amount, 0)
+      ];
+      return result;
     })
+      .pipe(stringifier)
+      .on('data', buffer => results.push(buffer.toString()))
+      .on('end', () => {
+        const result = results.join('');
+        resolve(result);
+      });
+  });
 
+  transformAsync(data)
+    .then(result => {
+      fs.writeFileSync(outFile, result);
+      console.log(`Written: ${outFile}`);
+    })
 
 };
 
-convert(inFile);
+convert(inFile, outFile);
