@@ -15,7 +15,14 @@ if (!fs.existsSync(inFile)) {
   return 0;
 }
 
-const outFile = argv['out'] || argv['_'][1] || defaultSettings.outFile;
+const getOutFromInfile = filename => {
+  const basename = filename.slice(0, (filename.lastIndexOf('.') >>> 0));
+  const ext = filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2);
+
+  return `${basename}-YNAB.${ext}`;
+};
+
+const outFile = argv['out'] || argv['_'][1] || getOutFromInfile(inFile);
 
 const getLines = data => (data.match(/\r?\n/g) || '').length + 1;
 
