@@ -4,10 +4,6 @@ const parse = require('csv-parse/lib/sync');
 const transform = require('stream-transform');
 const stringify = require('csv-stringify');
 
-const defaultSettings = {
-  outFile: 'converted.csv',
-};
-
 // Check input
 const inFile = argv['in'] || argv['_'][0];
 if (!fs.existsSync(inFile)) {
@@ -86,8 +82,8 @@ const convert = function (inFile) {
         data.comment,
         '',
         '',
-        Math.min(amount, 0),
-        Math.max(amount, 0)
+        Math.abs(Math.min(amount, 0)),
+        Math.abs(Math.max(amount, 0))
       ];
       return result;
     })
