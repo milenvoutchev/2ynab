@@ -2,7 +2,9 @@
 DeutscheBank to YNAB CSV converter
 
 ## Purpose
-A Node.js® tool to convert bank statements from Deutsche Bank's CSV format into that required for importing into YNAB4.
+A Node.js® tool to convert bank statements from bank CSV format into that required for importing into YNAB4. Currently supported statements are:
+- Deutsche KreditBank (DKB) - Credit Card transactions
+- DeutscheBank (DB) - Credit Card transactions
 
 ## Requirements
 - A running Node.js environment (http://lmgtfy.com/?q=install+node)
@@ -14,8 +16,16 @@ A Node.js® tool to convert bank statements from Deutsche Bank's CSV format into
 
 Convert statement CSV downloaded from "meine.deutsche-bank.de" into YNAB importable format.
 
-```$ node db2ynab.js [--in=]FILE [[--out]=FILE]```
+```$ node db2ynab.js [--in=]<FILE> [--type=]<DbCreditCard|DkbCreditCard>```
 
-In case no "out" file was specified, the script will create a new "converted.csv" in the current folder.
+Parameters:
+- [--in=]<FILE> The transactions list as downloaded from the bank
+- [--type=]<DbCreditCard|DkbCreditCard> Must be any of "DbCreditCard", "DkbCreditCard" depending on the type of statement.
+
+For instace, to convert credit card transactions from DKB:
+
+```
+node db2ynab.js 1234________5678.csv DkbCreditCard
+```
 
 Thats's it!
