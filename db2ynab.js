@@ -1,7 +1,7 @@
 const argv = require('yargs').argv;
 const fs = require('fs');
 const ConverterFactory = require('./src/ConverterFactory');
-const { getOutFromInfile } = require('./src/helper');
+const { getOutFromInfile } = require('./src/lib/helper');
 
 // Check input
 const inFile = argv['in'] || argv['_'][0];

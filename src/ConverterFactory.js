@@ -1,15 +1,16 @@
 class ConverterFactory {
 
   constructor(strategy) {
-    console.log('Converter:constructor');
-
+    const strategyFilename = strategy.indexOf('Strategy') < 0 ? `${strategy}Strategy` : strategy;
     let Strategy;
 
     switch (strategy) {
       case 'DbCreditCard':
-      default:
-        Strategy = require(`./${strategy}Strategy.js`);
+      case 'DkbCreditCard':
+        Strategy = require(`./strategy/${strategyFilename}.js`);
         break;
+      default:
+        throw new Error('Unknown strategy');
     }
 
     return new Strategy();
