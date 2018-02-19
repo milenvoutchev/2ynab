@@ -1,0 +1,12 @@
+"Kreditkarte:";"1234********1234 Kreditkarte";
+
+"Von:";"01.01.2017";
+"Bis:";"01.01.2018";
+"Saldo:";"-12.34 EUR";
+"Datum:";"01.01.2018";
+
+"Umsatz abgerechnet und nicht im Saldo enthalten";"Wertstellung";"Belegdatum";"Beschreibung";"Betrag (EUR)";"Urspr�nglicher Betrag";
+"Nein";"01.01.2017";"01.01.2017";"Transaction description";"-123,45";"";
+"Nein";"01.01.2017";"01.01.2017";"Transaction description";"-1,23";"";
+"Ja";"01.01.2017";"01.01.2017";"Transaction description";"-123,45";"-246,90 BGN";
+"Ja";"01.01.2017";"01.01.2017";"Transaction description";"300,00";"";
