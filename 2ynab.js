@@ -12,11 +12,11 @@ if (!fs.existsSync(inFile)) {
 
 const strategy = argv['type'] || argv['_'][1];
 if (!strategy) {
-  console.error('--type={DbCreditCard|...} is required.');
+  console.error('--type={DbCreditCard|DkbCreditCard} is required.');
   return 0;
 }
 
-const outFile = argv['out'] || argv['_'][1] || getOutFromInfile(inFile);
+const outFile = argv['out'] || argv['_'][2] || getOutFromInfile(inFile);
 
 const converter = new ConverterFactory(strategy);
 converter.convert(inFile, outFile);

@@ -1,10 +1,10 @@
-# db/dkb 2ynab
-DeutscheBank to YNAB CSV converter
+# 2ynab
+Bank CSV to YNAB converter. Supports DeutscheBank (db), Deutsche KreditBank (DKB).
 
 ## Purpose
 A command-line tool to convert account transaction reports (.csv) to YNAB4 import-ready format (.csv). Currently supported statements are:
 - Deutsche KreditBank (DKB) - Credit Card transactions
-- DeutscheBank (DB) - Credit Card transactions
+- DeutscheBank (db) - Credit Card transactions
 
 Based on Node.js®.
 
@@ -18,13 +18,15 @@ Based on Node.js®.
 
 To run the conversion tool:
 
-```$ node db2ynab.js [--in=]<FILE> [--type=]<DbCreditCard|DkbCreditCard>```
+```
+$ node db2ynab.js [--in=]<FILE> [--type=]<DbCreditCard|DkbCreditCard>
+```
 
 Parameters:
 - [--in=]<FILE> The transactions list as downloaded from the bank
 - [--type=]<DbCreditCard|DkbCreditCard> Must be any of "DbCreditCard", "DkbCreditCard" depending on the type of statement.
 
-For instace, to convert credit card transactions from DKB:
+For instance, to convert credit card transactions from DKB:
 
 ```
 node db2ynab.js 1234________5678.csv DkbCreditCard
