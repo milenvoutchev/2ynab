@@ -10,15 +10,20 @@ const SETTINGS = {
   skip_empty_lines: true,
   skip_lines_with_empty_values: true,
   columns: [
-    'im_saldo',
-    'date_document',
-    'date_receipt',
-    'description',
-    'amount_eur',
-    'amount_foreign_currency_text',
+    'buchungstag',
+    'wertstellung',
+    'buchungstext',
+    'auftraggeber_beguenstiger',
+    'verwendungszweck',
+    'kontonummer',
+    'blz',
+    'betrag_eur',
+    'glaubiger_id',
+    'mandatsreferenz',
+    'kundenreferenz',
     'empty',
   ],
-  sliceBegin: 8,
+  sliceBegin: 7,
   sliceEnd: null,
   stringifier: {
     header: true,
@@ -34,19 +39,19 @@ const SETTINGS = {
   }
 };
 
-class DkbCreditCardStrategy extends BaseStrategy {
+class DkbGirokontoStrategy extends BaseStrategy {
 
   constructor() {
     super();
-    console.log('DkbCreditCardStrategy:constructor');
+    console.log('DkbGirokontoStrategy:constructor');
   }
 
   lineTransform(data) {
-    const amount = parseDecimalNumber(data.amount_eur, ".,");
-    const memo = data.amount_foreign_currency_text;
+    const amount = parseDecimalNumber(data.betrag_eur, ".,");
+    const memo = data.verwendungszweck;
     const result = [
-      data.date_receipt,
-      data.description,
+      data.buchungstag,
+      data.auftraggeber_beguenstiger,
       '',
       memo,
       Math.abs(Math.min(amount, 0)),
@@ -71,4 +76,4 @@ class DkbCreditCardStrategy extends BaseStrategy {
   }
 }
 
-module.exports = DkbCreditCardStrategy;
+module.exports = DkbGirokontoStrategy;

@@ -5,6 +5,7 @@
     "csv": "^2.0.0",
     "csv-parse": "^2.0.0",
     "csv-stringify": "^2.0.0",
+    "parse-decimal-number": "^1.0.0",
     "stream-transform": "^1.0.0",
     "yargs": "^10.0.3"
   },

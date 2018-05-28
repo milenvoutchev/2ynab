@@ -7,6 +7,7 @@ class ConverterFactory {
     switch (strategy) {
       case 'DbCreditCard':
       case 'DkbCreditCard':
+      case 'DkbGirokonto':
         Strategy = require(`./strategy/${strategyFilename}.js`);
         break;
       default:

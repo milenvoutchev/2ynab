@@ -6,13 +6,13 @@ const { getOutFromInfile } = require('./src/lib/helper');
 // Check input
 const inFile = argv['in'] || argv['_'][0];
 if (!fs.existsSync(inFile)) {
-  console.error('--in=FILE is required.');
+  console.error('Input file is required: [--in=]FILE');
   return 0;
 }
 
 const strategy = argv['type'] || argv['_'][1];
 if (!strategy) {
-  console.error('--type={DbCreditCard|DkbCreditCard} is required.');
+  console.error('Export/conversion type is required: [--type=]TYPE');
   return 0;
 }
 

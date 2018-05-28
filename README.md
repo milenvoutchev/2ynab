@@ -19,17 +19,20 @@ Based on Node.js®.
 To run the conversion tool:
 
 ```
-$ node db2ynab.js [--in=]<FILE> [--type=]<DbCreditCard|DkbCreditCard>
+$ node 2ynab.js [--in=]FILE [--type=]TYPE
 ```
 
 Parameters:
-- [--in=]<FILE> The transactions list as downloaded from the bank
-- [--type=]<DbCreditCard|DkbCreditCard> Must be any of "DbCreditCard", "DkbCreditCard" depending on the type of statement.
+- _[--in=]FILE_ The transactions export as downloaded from the bank
+- _[--type=]TYPE_ The type of export/conversion to run. Must be any of:
+ - DbCreditCard
+ - DkbCreditCard
+ - DkbGirokonto
 
 For instance, to convert credit card transactions from DKB:
 
 ```
-node db2ynab.js 1234________5678.csv DkbCreditCard
+node 2ynab.js 1234________5678.csv DkbCreditCard
 ```
 
 Thats's it!
