@@ -2,19 +2,19 @@ class ConverterFactory {
 
   constructor(strategy) {
     const strategyFilename = strategy.indexOf('Strategy') < 0 ? `${strategy}Strategy` : strategy;
-    let Strategy;
+    let StrategyClass;
 
-    switch (strategy) {
-      case 'DbCreditCard':
-      case 'DkbCreditCard':
-      case 'DkbGirokonto':
-        Strategy = require(`./strategy/${strategyFilename}.js`);
+    switch (strategyFilename) {
+      case 'DbCreditCardStrategy':
+      case 'DkbCreditCardStrategy':
+      case 'DkbGirokontoStrategy':
+        StrategyClass = require(`./strategy/${strategyFilename}.js`);
         break;
       default:
         throw new Error('Unknown strategy');
     }
 
-    return new Strategy();
+    return new StrategyClass();
   }
 }
 

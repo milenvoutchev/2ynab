@@ -18,7 +18,7 @@ const SETTINGS = {
     'amount_foreign_currency_text',
     'empty',
   ],
-  sliceBegin: 8,
+  sliceBegin: 7,
   sliceEnd: null,
   stringifier: {
     header: true,
