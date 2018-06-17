@@ -5,14 +5,19 @@ const { getOutFromInfile } = require('./src/lib/helper');
 
 // Check input
 const inFile = argv['in'] || argv['_'][0];
+
+let errorMessage;
 if (!fs.existsSync(inFile)) {
-  console.error('Input file is required: [--in=]FILE');
-  return 0;
+  errorMessage = 'Input file is required: [--in=]FILE';
 }
 
 const strategy = argv['type'] || argv['_'][1];
 if (!strategy) {
-  console.error('Export/conversion type is required: [--type=]TYPE');
+  errorMessage = 'File type is required: [--type=]' + ConverterFactory.getStrategies().join('|');
+}
+
+if (errorMessage) {
+  console.error(errorMessage);
   return 0;
 }
 

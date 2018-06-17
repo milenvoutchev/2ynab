@@ -1,3 +1,9 @@
+const strategies = [
+  'DbCreditCardStrategy',
+  'DkbCreditCardStrategy',
+  'DkbGirokontoStrategy'
+];
+
 class ConverterFactory {
 
   constructor(strategy) {
@@ -15,6 +21,10 @@ class ConverterFactory {
     }
 
     return new StrategyClass();
+  }
+
+  static getStrategies() {
+    return strategies;
   }
 }
 
