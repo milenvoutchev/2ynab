@@ -16,7 +16,7 @@ if (!strategy) {
   errorMessages.push('File type is required: [--type=]' + ConverterFactory.getStrategies().join('|'));
 }
 
-if (errorMessages) {
+if (errorMessages.length) {
   console.error(errorMessages.join("\r\n"));
   return 0;
 }
