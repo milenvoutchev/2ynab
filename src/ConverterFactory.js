@@ -1,30 +1,42 @@
-const strategies = [
-  'DbCreditCardStrategy',
-  'DkbCreditCardStrategy',
-  'DkbGirokontoStrategy'
-];
+const DbCreditCardStrategy = require(`./strategy/DbCreditCardStrategy.js`);
+const DkbCreditCardStrategy = require(`./strategy/DkbCreditCardStrategy.js`);
+const DkbGirokontoStrategy = require(`./strategy/DkbGirokontoStrategy.js`);
+
+const strategies = {
+  DbCreditCardStrategy,
+  DkbCreditCardStrategy,
+  DkbGirokontoStrategy,
+};
 
 class ConverterFactory {
 
   constructor(strategy) {
-    const strategyFilename = strategy.indexOf('Strategy') < 0 ? `${strategy}Strategy` : strategy;
-    let StrategyClass;
-
-    switch (strategyFilename) {
-      case 'DbCreditCardStrategy':
-      case 'DkbCreditCardStrategy':
-      case 'DkbGirokontoStrategy':
-        StrategyClass = require(`./strategy/${strategyFilename}.js`);
-        break;
-      default:
-        throw new Error('Unknown strategy');
-    }
+    let StrategyClass = ConverterFactory.getStrategy(strategy);
 
     return new StrategyClass();
   }
 
+  /**
+   *
+   * @returns {string[]}
+   */
   static getStrategies() {
-    return strategies;
+    return Object.keys(strategies);
+  }
+
+  /**
+   *
+   * @returns {string[]}
+   */
+  static getStrategy(strategy) {
+    const strategyFilename = strategy.indexOf('Strategy') < 0 ? `${strategy}Strategy` : strategy;
+    const StrategyClass = strategies[strategyFilename];
+
+    if (!StrategyClass) {
+        throw new Error(`Unknown strategy: ${strategyFilename}`);
+    }
+
+    return StrategyClass;
   }
 }
 

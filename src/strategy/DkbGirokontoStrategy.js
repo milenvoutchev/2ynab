@@ -46,7 +46,12 @@ class DkbGirokontoStrategy extends BaseStrategy {
     console.log('DkbGirokontoStrategy:constructor');
   }
 
-  lineTransform(data) {
+  /**
+   *
+   * @param data
+   * @returns {*[]}
+   */
+  static lineTransform(data) {
     const amount = parseDecimalNumber(data.betrag_eur, ".,");
     const memo = data.verwendungszweck;
     const result = [
@@ -60,6 +65,12 @@ class DkbGirokontoStrategy extends BaseStrategy {
     return result;
   }
 
+  /**
+   *
+   * @param inFile
+   * @param outFile
+   * @returns {Promise<void>}
+   */
   async convert(inFile, outFile) {
     console.log(`In: ${inFile}`);
 
@@ -69,10 +80,19 @@ class DkbGirokontoStrategy extends BaseStrategy {
 
     console.log(`Transform: ${data.length}`);
 
-    const result = await super.transformAsync(data, this.lineTransform);
+    const result = await super.transformAsync(data, DkbGirokontoStrategy.lineTransform);
 
     writeOut(outFile, result);
     console.log(`Written: ${outFile}`);
+  }
+
+  /**
+   *
+   * @param inFile
+   * @returns {boolean}
+   */
+  static isMatch(inFile) {
+    return !!inFile.match(/\d{10}.csv$/g);
   }
 }
 

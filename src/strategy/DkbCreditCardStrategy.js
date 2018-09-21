@@ -41,7 +41,12 @@ class DkbCreditCardStrategy extends BaseStrategy {
     console.log('DkbCreditCardStrategy:constructor');
   }
 
-  lineTransform(data) {
+  /**
+   *
+   * @param data
+   * @returns {*[]}
+   */
+  static lineTransform(data) {
     const amount = parseDecimalNumber(data.amount_eur, ".,");
     const memo = data.amount_foreign_currency_text;
     const result = [
@@ -55,6 +60,12 @@ class DkbCreditCardStrategy extends BaseStrategy {
     return result;
   }
 
+  /**
+   *
+   * @param inFile
+   * @param outFile
+   * @returns {Promise<void>}
+   */
   async convert(inFile, outFile) {
     console.log(`In: ${inFile}`);
 
@@ -64,10 +75,19 @@ class DkbCreditCardStrategy extends BaseStrategy {
 
     console.log(`Transform: ${data.length}`);
 
-    const result = await super.transformAsync(data, this.lineTransform);
+    const result = await super.transformAsync(data, DkbCreditCardStrategy.lineTransform);
 
     writeOut(outFile, result);
     console.log(`Written: ${outFile}`);
+  }
+
+  /**
+   *
+   * @param inFile
+   * @returns {boolean}
+   */
+  static isMatch(inFile) {
+    return !!inFile.match(/\d{4}________\d{4}.csv$/g);
   }
 }
 

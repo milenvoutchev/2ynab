@@ -41,7 +41,12 @@ class DbCreditCardStrategy extends BaseStrategy {
     console.log('DbCreditCardStrategy:constructor');
   }
 
-  lineTransform(data) {
+  /**
+   *
+   * @param data
+   * @returns {*[]}
+   */
+  static lineTransform(data) {
     const amount = data.amount.replace(' ', '').replace(',', '.') * 1;
     const result = [
       data.date_document,
@@ -54,6 +59,12 @@ class DbCreditCardStrategy extends BaseStrategy {
     return result;
   }
 
+  /**
+   *
+   * @param inFile
+   * @param outFile
+   * @returns {Promise<void>}
+   */
   async convert(inFile, outFile) {
     console.log(`In: ${inFile}`);
 
@@ -63,10 +74,19 @@ class DbCreditCardStrategy extends BaseStrategy {
 
     console.log(`Transform: ${data.length}`);
 
-    const result = await super.transformAsync(data, this.lineTransform);
+    const result = await super.transformAsync(data, DbCreditCardStrategy.lineTransform);
 
     writeOut(outFile, result);
     console.log(`Written: ${outFile}`);
+  }
+
+  /**
+   *CreditCardTransactions5232123412341234_2018_05
+   * @param inFile
+   * @returns {boolean}
+   */
+  static isMatch(inFile) {
+    return !!inFile.match(/CreditCardTransactions\d{16}_\d{4}_\d{2}.csv$/g);
   }
 }
 

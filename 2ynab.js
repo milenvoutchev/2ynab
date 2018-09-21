@@ -11,9 +11,18 @@ if (!fs.existsSync(inFile)) {
   errorMessages.push('Input file is required: [--in=]FILE');
 }
 
-const strategy = argv['type'] || argv['_'][1];
+let strategy = argv['type'] || argv['_'][1];
 if (!strategy) {
-  errorMessages.push('File type is required: [--type=]' + ConverterFactory.getStrategies().join('|'));
+  ConverterFactory.getStrategies().some(strategyToCheck => {
+    if (ConverterFactory.getStrategy(strategyToCheck).isMatch(inFile)) {
+      strategy = strategyToCheck;
+
+      return true;
+    }
+  });
+}
+if (!strategy) {
+  errorMessages.push('Could not match convert strategy by file name. Please specify it manually: [--type=]' + ConverterFactory.getStrategies().join('|'));
 }
 
 if (errorMessages.length) {

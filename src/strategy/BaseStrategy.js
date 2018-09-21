@@ -34,6 +34,12 @@ const SETTINGS = {
 };
 
 class BaseStrategy {
+  /**
+   *
+   * @param data
+   * @param lineTransformer
+   * @returns {Promise<any>}
+   */
   transformAsync(data, lineTransformer = (data) => data) {
     return new Promise(function (resolve, reject) {
       const results = [];
