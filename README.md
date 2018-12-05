@@ -18,12 +18,12 @@ Based on Node.js®.
 To run the conversion tool:
 
 ```
-$ node 2ynab.js [--in=]FILE [--type=]TYPE
+$ node 2ynab.js [--in=]FILE [[--type=]TYPE]
 ```
 
 Parameters:
-- _[--in=]FILE_ The transactions export as downloaded from the bank
-- _[--type=]TYPE_ The type of export/conversion to run. Must be any of:
+- _[--in=]FILE_ (required) The transactions export as downloaded from the bank.
+- _[--type=]TYPE_ (optional) The type of export/conversion to run. Must be any of:
  - DbCreditCard
  - DkbCreditCard
  - DkbGirokonto
