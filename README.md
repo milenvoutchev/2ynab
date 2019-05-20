@@ -50,4 +50,6 @@ Thats's it!
 
 
 ---- 
-If you've made it here, chances are you might be interested in conversion tools for your bank or YNAB. So why don't you also check this useful tool: https://github.com/bank2ynab/bank2ynab
+
+### Alternatives
+If you've made it here, chances are you might be interested in conversion tools for your bank or YNAB. So why don't you also check out this useful tool: https://github.com/bank2ynab/bank2ynab
