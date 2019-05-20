@@ -1,9 +1,9 @@
 # 2ynab
-Bank CSV to YNAB converter. 
+Bank CSV to YNAB converter.
 
-Command-line tool to convert account transaction reports (.csv) to YNAB4 import-ready format (.csv). Currently supported statements are:
-- Deutsche KreditBank (DKB) - Girokonto, credit card
-- DeutscheBank (db) - Credit card
+Command-line tool to convert account transaction reports (.csv) to YNAB4 import-ready format (.csv). The currently supported reports are:
+- Deutsche KreditBank (DKB) - Girokonto (e.g. VPay), credit card (e.g. Visa)
+- DeutscheBank (db) - Girokonto (e.g. Maestro card), credit card (e.g. MasterCard)
 
 Based on Node.js®.
 
@@ -24,6 +24,7 @@ $ node 2ynab.js [--in=]FILE [[--type=]TYPE]
 Parameters:
 - _[--in=]FILE_ (required) The transactions export as downloaded from the bank.
 - _[--type=]TYPE_ (optional) The type of export/conversion to run. Must be any of:
+ - DbDebitCard
  - DbCreditCard
  - DkbCreditCard
  - DkbGirokonto
@@ -35,7 +36,7 @@ node 2ynab.js 1234________5678.csv DkbCreditCard
 ```
 
 ### Type auto-detect
-If run without the `--type` parameter, the file name will be matched against saved patterns, in attempt to auto-detect the type.
+The script could try to detect the type of conversion, based on the filename. When run without the `--type` parameter, the file name will be matched against hard-coded patterns.
 
 ```
 $ node 2ynab.js 1234________5678.csv
