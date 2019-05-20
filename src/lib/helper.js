@@ -5,4 +5,20 @@ const getOutFromInfile = filename => {
   return `${basename}-YNAB.${ext}`;
 };
 
-module.exports = { getOutFromInfile };
+const parseIntlNumber = (strToParse) => {
+  if (!strToParse) {
+    return 0;
+  }
+  strToParse = strToParse.replace(' ', '');
+  if ( strToParse.match(/\.\d{2}$/) ) {
+    // decimal symbol is "." ("1,000.12")
+    return parseFloat(strToParse.replace(',', '')) * 1;
+  }
+  // decimal symbol is "," ("1.000,12")
+  return parseFloat(strToParse.replace('.', '').replace(',','.')) * 1;
+}
+
+module.exports = {
+  getOutFromInfile,
+  parseIntlNumber
+};
