@@ -47,3 +47,7 @@ Written: 1234________5678-YNAB.csv
 
 
 Thats's it!
+
+
+---- 
+If you've made it here, chances are you might be interested in conversion tools for your bank or YNAB. So why don't you also check this useful tool: https://github.com/bank2ynab/bank2ynab
