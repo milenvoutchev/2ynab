@@ -1,14 +1,4 @@
-const DbCreditCardStrategy = require(`./strategy/DbCreditCardStrategy.js`);
-const DbDebitCardStrategy = require(`./strategy/DbDebitCardStrategy.js`);
-const DkbCreditCardStrategy = require(`./strategy/DkbCreditCardStrategy.js`);
-const DkbGirokontoStrategy = require(`./strategy/DkbGirokontoStrategy.js`);
-
-const strategies = {
-  DbCreditCardStrategy,
-  DbDebitCardStrategy,
-  DkbCreditCardStrategy,
-  DkbGirokontoStrategy,
-};
+const strategies = require('./strategy/index');
 
 class ConverterFactory {
 

@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const getInput = function (inFile, sliceStart = 1, sliceEnd = null, encoding = 'latin1') {
+const getInput = function (inFile, sliceStart = 1, sliceEnd = null, encoding = 'utf8') {
   const end = sliceEnd ? sliceEnd : undefined;
   const getLines = data => (data.match(/\r?\n/g) || '').length + 1;
   const getSlicedInput = input => input.split('\n').slice(sliceStart, end).join('\n');
