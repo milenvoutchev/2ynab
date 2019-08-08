@@ -1,27 +1,20 @@
 const parse = require('csv-parse/lib/sync');
-const parseDecimalNumber = require('parse-decimal-number');
 const { getInput, writeOut } = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
 
 const SETTINGS = {
-  delimiter: ';',
+  delimiter: ',',
   skip_empty_lines: true,
   skip_lines_with_empty_values: true,
   columns: [
-    'buchungstag',
-    'wertstellung',
-    'buchungstext',
-    'auftraggeber_beguenstiger',
-    'verwendungszweck',
-    'kontonummer',
-    'blz',
-    'betrag_eur',
-    'glaubiger_id',
-    'mandatsreferenz',
-    'kundenreferenz',
-    'empty',
+    'dateTime',
+    'inBGN',
+    'outBGN',
+    'systemId',
+    'recipient',
+    'comment',
   ],
-  sliceBegin: 7,
+  sliceBegin: 1,
   sliceEnd: Infinity,
   stringifier: {
     header: true,
@@ -37,11 +30,21 @@ const SETTINGS = {
   }
 };
 
-class DkbGirokontoStrategy extends BaseStrategy {
+const RATE_EUR_BGN = 1.95583;
+
+class EpayMicroaccountStrategy extends BaseStrategy {
 
   constructor() {
     super();
-    console.log('DkbGirokontoStrategy:constructor');
+    console.log('EpayMicroaccountStrategy:constructor');
+  }
+
+  static toEUR(amount) {
+    return amount * 1 / RATE_EUR_BGN;
+  }
+
+  static toDate(dateTime) {
+    return String(dateTime).replace(/^(\d{2})\.(\d{2})\.(\d{4}).+/g,'$3-$2-$1');
   }
 
   /**
@@ -50,15 +53,16 @@ class DkbGirokontoStrategy extends BaseStrategy {
    * @returns {*[]}
    */
   static lineTransform(data) {
-    const amount = parseDecimalNumber(data.betrag_eur, ".,");
-    const memo = data.verwendungszweck;
+    const amountOut = EpayMicroaccountStrategy.toEUR(data.outBGN);
+    const amountIn = EpayMicroaccountStrategy.toEUR(data.inBGN);
+    const date = EpayMicroaccountStrategy.toDate(data.dateTime);
     const result = [
-      data.buchungstag,
-      data.auftraggeber_beguenstiger,
+      date,
+      data.recipient,
       '',
-      memo,
-      Math.abs(Math.min(amount, 0)),
-      Math.abs(Math.max(amount, 0))
+      data.comment,
+      Math.abs(amountOut),
+      Math.abs(amountIn)
     ];
     return result;
   }
@@ -78,20 +82,20 @@ class DkbGirokontoStrategy extends BaseStrategy {
 
     console.log(`Transform: ${data.length}`);
 
-    const result = await super.transformAsync(data, DkbGirokontoStrategy.lineTransform);
+    const result = await super.transformAsync(data, EpayMicroaccountStrategy.lineTransform);
 
     writeOut(outFile, result);
     console.log(`Written: ${outFile}`);
   }
 
   /**
-   *
+   * E.g. epay_microaccount_2019-08-08_11-43-49.csv
    * @param inFile
    * @returns {boolean}
    */
   static isMatch(inFile) {
-    return !!inFile.match(/\d{10}.csv$/g);
+    return !!inFile.match(/epay_microaccount_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}.csv$/g);
   }
 }
 
-module.exports = DkbGirokontoStrategy;
+module.exports = EpayMicroaccountStrategy;

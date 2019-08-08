@@ -1,6 +1,4 @@
 const parse = require('csv-parse/lib/sync');
-const transform = require('stream-transform');
-const stringify = require('csv-stringify');
 const { getInput, writeOut } = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
 const { parseIntlNumber } = require('../lib/helper.js');
