@@ -19,7 +19,7 @@ const SETTINGS = {
     'empty',
   ],
   sliceBegin: 7,
-  sliceEnd: null,
+  sliceEnd: Infinity,
   stringifier: {
     header: true,
     delimiter: ',',
