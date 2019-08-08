@@ -3,6 +3,7 @@ const transform = require('stream-transform');
 const stringify = require('csv-stringify');
 const { getInput, writeOut } = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
+const { parseIntlNumber } = require('../lib/helper.js');
 
 const SETTINGS = {
   delimiter: ';',
@@ -11,15 +12,25 @@ const SETTINGS = {
   columns: [
     'date_document',
     'date_receipt',
-    'comment',
-    'foreign_currency',
-    'amount_foreign_currency',
-    'exchange_rate',
-    'amount',
+    'type',
+    'beneficiary',
+    'details',
+    'iban',
+    'bic',
+    'customer_reference',
+    'mandate_reference',
+    'creditor_id',
+    'compensation_amount',
+    'original_amount',
+    'ultimate_creditor',
+    'number_transactions',
+    'number_cheques',
+    'debit',
+    'credit',
     'currency'
   ],
   sliceBegin: 5,
-  sliceEnd: -2,
+  sliceEnd: -1,
   stringifier: {
     header: true,
     delimiter: ',',
@@ -47,14 +58,15 @@ class DbCreditCardStrategy extends BaseStrategy {
    * @returns {*[]}
    */
   static lineTransform(data) {
-    const amount = data.amount.replace(' ', '').replace(',', '.') * 1;
+    const debit = parseIntlNumber(data.debit);
+    const credit = parseIntlNumber(data.credit);
     const result = [
       data.date_document,
-      data.comment,
+      data.type,
       '',
-      '',
-      Math.abs(Math.min(amount, 0)),
-      Math.abs(Math.max(amount, 0))
+      data.details,
+      Math.abs(Math.min(debit, 0)),
+      Math.abs(Math.max(credit, 0))
     ];
     return result;
   }
@@ -81,12 +93,14 @@ class DbCreditCardStrategy extends BaseStrategy {
   }
 
   /**
-   *CreditCardTransactions5232123412341234_2018_05
+   * Transactions_123_123456789_12345678_123456.csv
+   * Kontoumsaetze_123_123456789_12345678_123456.csv
    * @param inFile
    * @returns {boolean}
    */
   static isMatch(inFile) {
-    return !!inFile.match(/CreditCardTransactions\d{16}_\d{4}_\d{2}.csv$/g);
+    return !!inFile.match(/Transactions_\d{3}_\d{9}_\d{8}_\d{6}.csv$/g)
+      || !!inFile.match(/Kontoumsaetze_\d{3}_\d{9}_\d{8}_\d{6}.csv$/g)
   }
 }
 
