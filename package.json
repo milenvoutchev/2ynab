@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "csv": "^2.0.0",
-    "csv-parse": "^2.0.0",
+    "csv-parse": "^4.4.6",
     "csv-stringify": "^2.0.0",
     "parse-decimal-number": "^1.0.0",
     "stream-transform": "^1.0.0",
