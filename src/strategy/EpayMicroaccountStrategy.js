@@ -8,9 +8,9 @@ const SETTINGS = {
   skip_lines_with_empty_values: true,
   columns: [
     'dateTime',
+    'account',
     'inBGN',
     'outBGN',
-    'systemId',
     'recipient',
     'comment',
   ],
@@ -94,7 +94,11 @@ class EpayMicroaccountStrategy extends BaseStrategy {
    * @returns {boolean}
    */
   static isMatch(inFile) {
-    return !!inFile.match(/epay_microaccount_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}.csv$/g);
+    const filePatterns = [
+      /^epay_movements_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}.csv$/g,
+      /^epay_microaccount_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}.csv$/g,
+    ];
+    return filePatterns.some(pattern => inFile.match(pattern));
   }
 }
 
