@@ -1,6 +1,6 @@
 const parse = require('csv-parse/lib/sync');
 const parseDecimalNumber = require('parse-decimal-number');
-const { getInput, writeOut } = require('../lib/file.js');
+const { getFileContentsCsv, writeOut } = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
 
 const SETTINGS = {
@@ -41,7 +41,7 @@ class DkbGirokontoStrategy extends BaseStrategy {
 
   constructor() {
     super();
-    console.log('DkbGirokontoStrategy:constructor');
+    console.log('DkbGirokontoStrategy');
   }
 
   /**
@@ -72,7 +72,7 @@ class DkbGirokontoStrategy extends BaseStrategy {
   async convert(inFile, outFile) {
     console.log(`In: ${inFile}`);
 
-    const input = getInput(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd);
+    const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd);
 
     const data = parse(input, SETTINGS);
 

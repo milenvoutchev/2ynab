@@ -1,5 +1,5 @@
 const parse = require('csv-parse/lib/sync');
-const { getInput, writeOut } = require('../lib/file.js');
+const { getFileContentsCsv, writeOut } = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
 
 const SETTINGS = {
@@ -36,7 +36,7 @@ class DbCreditCardStrategy extends BaseStrategy {
 
   constructor() {
     super();
-    console.log('DbCreditCardStrategy:constructor');
+    console.log('DbCreditCardStrategy');
   }
 
   /**
@@ -66,7 +66,7 @@ class DbCreditCardStrategy extends BaseStrategy {
   async convert(inFile, outFile) {
     console.log(`In: ${inFile}`);
 
-    const input = getInput(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd);
+    const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd);
 
     const data = parse(input, SETTINGS);
 

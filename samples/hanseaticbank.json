@@ -1,0 +1,32 @@
+[
+  {
+    "bookingdate": "2022-01-30",
+    "transactiondate": "",
+    "amount": 123.45,
+    "type": "LS_EINZUG",
+    "description": "Kartenabrechnung 01\/2022 Hanseatic Bank",
+    "transactionId": "",
+    "currencyCode": 978,
+    "primanota": "8038",
+    "refiban": "XXXXXX",
+    "refbic": "XXXXXX",
+    "counteraccount": "",
+    "interestamount": 0,
+    "interestrate": 0
+  },
+  {
+    "bookingdate": "2022-01-30",
+    "transactiondate": "2022-01-28",
+    "amount": -1.23,
+    "type": "KARTEN_UMS_",
+    "description": "ACME STORE & CO.",
+    "transactionId": "XXXXXX",
+    "currencyCode": 978,
+    "primanota": "3400",
+    "refiban": "",
+    "refbic": "",
+    "counteraccount": "XXXXXX",
+    "interestamount": 0,
+    "interestrate": 0
+  }
+]
