@@ -53,7 +53,7 @@ Written: 1234________5678-YNAB.csv
 ### HanseaticBank
 HanseaticBank does not provide any option to download the transaction list. Luckily, using the browser's Developer Tools (e.g. in Chrome, but similar in FF, Edge) we can save the resuls of the AJAX request, listing all the transactions. 
 
-![image](https://user-images.githubusercontent.com/8949578/197752639-40f3bb9b-748e-42e5-920d-5015cb612724.png)
+![image](https://user-images.githubusercontent.com/8949578/197753328-3adce229-1013-41a6-a06f-209ee59a37b3.png)
 
 Find the request (it has the number of your account in the request URL) and save the results as .json. Then parse with 2ynab, like so:
 
