@@ -25,11 +25,11 @@ $ node 2ynab.js FILE [TYPE]
 Parameters:
 - _[--in=]FILE_ (required) The transactions export as downloaded from the bank.
 - _[--type=]TYPE_ (optional) The type of export/conversion to run. Must be any of:
- - DbDebitCard
- - DbCreditCard
- - DkbCreditCard
- - DkbGirokonto
- - HanseaticBank
+  - DbDebitCard
+  - DbCreditCard
+  - DkbCreditCard
+  - DkbGirokonto
+  - HanseaticBank
 
 For instance, to convert credit card transactions from DKB:
 
@@ -51,9 +51,9 @@ Written: 1234________5678-YNAB.csv
 ```
 
 ### HanseaticBank
-HanseaticBank does not provide any option to download the transaction list. Luckily, using the browsers Developer Tools (name in Chrome, but similar in FF, Edge) we can save the resuls of the AJAX request, listing all the transactions. 
+HanseaticBank does not provide any option to download the transaction list. Luckily, using the browser's Developer Tools (e.g. in Chrome, but similar in FF, Edge) we can save the resuls of the AJAX request, listing all the transactions. 
 
-![image](https://user-images.githubusercontent.com/8949578/197751335-a8312489-8e53-4eb0-a80d-41dacb7d438a.png)
+![image](https://user-images.githubusercontent.com/8949578/197752639-40f3bb9b-748e-42e5-920d-5015cb612724.png)
 
 Find the request (it has the number of your account in the request URL) and save the results as .json. Then parse with 2ynab, like so:
 
