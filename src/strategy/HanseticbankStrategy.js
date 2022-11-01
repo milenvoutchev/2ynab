@@ -17,10 +17,10 @@ class HanseaticbankStrategy extends BaseStrategy {
     const payee = HanseaticbankStrategy.getPayee(data.description)
     const memo = HanseaticbankStrategy.getMemo(data.description)
     const result = [
-      data.bookingdate,
+      data.transactiondate || data.bookingdate,
       payee,
       "",
-      `${data.transactiondate} ${memo}`,
+      `${data.bookingdate} ${memo}`,
       Math.abs(Math.min(data.amount, 0)),
       Math.abs(Math.max(data.amount, 0))
     ];
