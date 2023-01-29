@@ -1,4 +1,4 @@
-const { getFileContentsJson, writeOut } = require('../lib/file.js');
+const { getFileContentsJson} = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
 
 class HanseaticbankStrategy extends BaseStrategy {
@@ -31,20 +31,16 @@ class HanseaticbankStrategy extends BaseStrategy {
   /**
    *
    * @param inFile
-   * @param outFile
    * @returns {Promise<void>}
    */
-  async convert(inFile, outFile) {
+  async convert(inFile) {
     console.log(`In: ${inFile}`);
 
     const data = getFileContentsJson(inFile);
 
     console.log(`Transform: ${data.length}`);
 
-    const result = await super.transformAsync(data, HanseaticbankStrategy.lineTransform);
-
-    writeOut(outFile, result);
-    console.log(`Written: ${outFile}`);
+    return  await super.transformAsync(data, HanseaticbankStrategy.lineTransform);
   }
 
   /**

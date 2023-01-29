@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="filepond.css" rel="stylesheet"/>
+    <script src="filepond.js" type="application/ecmascript"></script>
+    <style>
+        .filepond--root {
+            height: 24em;
+            width: 48em;
+        }
+
+        .filepond--drop-label {
+            min-height: 22em !important;
+        }
+
+        .box {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <form>
+        <input type="file">
+        <input type="submit" formaction="/file" value="Convert to YNAB">
+    </form>
+</div>
+</body>
+<script src="client.js" type="application/ecmascript"></script>
+</html>

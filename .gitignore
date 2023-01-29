@@ -60,3 +60,5 @@ typings/
 .idea
 
 /*.csv
+
+.envrc

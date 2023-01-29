@@ -1,5 +1,5 @@
 const parse = require('csv-parse/lib/sync');
-const { getFileContentsCsv, writeOut } = require('../lib/file.js');
+const { getFileContentsCsv} = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
 const { parseIntlNumber } = require('../lib/helper.js');
 
@@ -72,10 +72,9 @@ class DbCreditCardStrategy extends BaseStrategy {
   /**
    *
    * @param inFile
-   * @param outFile
    * @returns {Promise<void>}
    */
-  async convert(inFile, outFile) {
+  async convert(inFile) {
     console.log(`In: ${inFile}`);
 
     const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd);
@@ -84,10 +83,7 @@ class DbCreditCardStrategy extends BaseStrategy {
 
     console.log(`Transform: ${data.length}`);
 
-    const result = await super.transformAsync(data, DbCreditCardStrategy.lineTransform);
-
-    writeOut(outFile, result);
-    console.log(`Written: ${outFile}`);
+    return await super.transformAsync(data, DbCreditCardStrategy.lineTransform);
   }
 
   /**
