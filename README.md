@@ -19,7 +19,7 @@ Based on Node.js®.
 To run the conversion tool:
 
 ```
-$ node 2ynab.js FILE [TYPE]
+$ node server.js FILE [TYPE]
 ```
 
 Parameters:
@@ -34,17 +34,17 @@ Parameters:
 For instance, to convert credit card transactions from DKB:
 
 ```
-node 2ynab.js 1234________5678.csv
+node server.js 1234________5678.csv
 
 // or, if TYPE could not be automatically detected from the file name
-node 2ynab.js 1234________5678.csv DkbCreditCard
+node server.js 1234________5678.csv DkbCreditCard
 ```
 
 ### Type auto-detect
 The script could try to detect the type of conversion, based on the filename. When run without the `--type` parameter, the file name will be matched against hard-coded patterns.
 
 ```
-$ node 2ynab.js 1234________5678.csv
+$ node server.js 1234________5678.csv
 Matched by filename: DkbCreditCardStrategy
 [...]
 Written: 1234________5678-YNAB.csv
@@ -58,7 +58,7 @@ HanseaticBank does not provide any option to download the transaction list. Luck
 Find the request (it has the number of your account in the request URL) and save the results as .json. Then parse with 2ynab, like so:
 
 ```
-$ node 2ynab.js hanseaticbank-or-so.json HanseaticBank
+$ node server.js hanseaticbank-or-so.json HanseaticBank
 ```
 
 ## Alternatives

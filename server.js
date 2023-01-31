@@ -1,7 +1,6 @@
 const argv = require('yargs').argv;
 const fs = require('fs');
 const ConverterFactory = require('./src/ConverterFactory');
-const {getOutFromInfile} = require("./src/lib/helper");
 // Check input
 const inFile = argv['in'] || argv['_'][0];
 
@@ -30,10 +29,17 @@ if (errorMessages.length) {
     return 0;
 }
 
-(async () => {
-    const outFile = argv['out'] || argv['_'][2] || getOutFromInfile(inFile);
-    const converter = new ConverterFactory(strategy);
-    const result = await converter.convert(inFile);
-    fs.writeFileSync(outFile, result);
-    console.log(`Written: ${outFile}`);
-})();
+// (async () => {
+//     const outFile = argv['out'] || argv['_'][2] || getOutFromInfile(inFile);
+//     const converter = new ConverterFactory(strategy);
+//     const result = await converter.convert(inFile);
+//     fs.writeFileSync(outFile, result);
+//     console.log(`Written: ${outFile}`);
+// })();
+
+const app = require('./src/server');
+const port = 3000;
+app.listen(port, () => {
+    // eslint-disable-next-line no-console
+  console.log(`Example app listening on port ${port}`)
+})
