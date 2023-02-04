@@ -32,9 +32,14 @@ app.post('/file', async (req, res) => {
     });
 })
 
-app.get('/file', async (req, res, next) => {
+app.get('/file', async (req, res) => {
     const fileId = req.query.filepond;
-    res.download(`${os.tmpdir()}/${fileId}-YNAB.csv`, 'YNAB.csv');
+    const path = `${os.tmpdir()}/${fileId}-YNAB.csv`
+    if (fileId && fs.existsSync(path)) {
+        res.download(path, 'YNAB.csv');
+    } else {
+        res.sendStatus(404);
+    }
 });
 
 module.exports = app;

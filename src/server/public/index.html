@@ -2,28 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>2YNAB Conversion</title>
     <link href="filepond.css" rel="stylesheet"/>
     <script src="filepond.js" type="application/ecmascript"></script>
     <style>
         .filepond--root {
-            height: 24em;
-            width: 48em;
+            height: 18em;
+            font-size: 3rem;
         }
 
-        .filepond--drop-label {
-            min-height: 22em !important;
+        .filepond--panel-root {
+            background-color: #eee;
+        }
+
+        .filepond--root .filepond--drop-label {
+            min-height: 18em;
+
         }
 
         .box {
             display: flex;
             justify-content: center;
         }
+
+        .form {
+            width: 80%;
+        }
+
+        input[type="submit"] {
+            background-color: #4495d7;
+            color: #f5f5fa;
+            width: 100%;
+            height: 6em;
+            font-size: 3rem;
+            border-radius: 0.5em;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
 <div class="box">
-    <form>
+    <form class="form">
         <input type="file">
         <input type="submit" formaction="/file" value="Convert to YNAB">
     </form>
