@@ -14,5 +14,7 @@ steps:
       - '--platform'
       - 'managed'
       - '--allow-unauthenticated'
+      - '--port'
+      - '3000'
 images:
   - 'europe-west1-docker.pkg.dev/$PROJECT_ID/to-ynab-repo/to-ynab:latest'
