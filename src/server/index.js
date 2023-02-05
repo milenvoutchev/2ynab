@@ -8,6 +8,9 @@ const os = require("os");
 
 const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
+app.use((req, res) => {
+    res.status(404).redirect('/');
+})
 
 const converter = new ConverterFactory('DkbGirokonto');
 
@@ -18,7 +21,7 @@ app.post('/file', async (req, res) => {
         if (err) {
             // eslint-disable-next-line no-console
             console.error(err);
-            return;
+            res.sendStatus(404);
         }
         const inFile = files.filepond.filepath;
         const fileId = files.filepond.newFilename;

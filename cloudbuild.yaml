@@ -1,0 +1,18 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/$PROJECT_ID/to-ynab-repo/to-ynab:latest', '.' ]
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'to-ynab'
+      - '--image'
+      - 'europe-west1-docker.pkg.dev/$PROJECT_ID/to-ynab-repo/to-ynab:latest'
+      - '--region'
+      - 'europe-west1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+images:
+  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/to-ynab-repo/to-ynab:latest'
