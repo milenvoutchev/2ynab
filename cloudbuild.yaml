@@ -2,6 +2,9 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/$PROJECT_ID/to-ynab-repo/to-ynab:latest', '.' ]
 
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'europe-west1-docker.pkg.dev/$PROJECT_ID/to-ynab-repo/to-ynab:latest']
+
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'run'

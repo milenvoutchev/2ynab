@@ -8,14 +8,15 @@ const os = require("os");
 
 const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
-app.use((req, res) => {
-    res.status(404).redirect('/');
-})
+// app.use((req, res) => {
+//     res.status(404).redirect('/');
+// })
 
 const converter = new ConverterFactory('DkbGirokonto');
 
 app.post('/file', async (req, res) => {
     const form = formidable({});
+    console.log("POST file");
 
     form.parse(req, async (err, fields, files) => {
         if (err) {
