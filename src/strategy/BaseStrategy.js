@@ -45,7 +45,6 @@ class BaseStrategy {
       transform(data, lineTransformer)
         .pipe(stringifier)
         .on('data', buffer => {
-          // const utf8Buffer = iconv.decode(buffer, 'latin1');
           results.push(buffer.toString());
         })
         .on('end', () => {
