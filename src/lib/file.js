@@ -8,8 +8,6 @@ const getFileContentsCsv = function (inFile, sliceStart = 1, sliceEnd = null, en
   const data = fs.readFileSync(inFile, {
     encoding: encoding
   });
-  // eslint-disable-next-line no-console
-  console.log(`Lines: (${sliceStart}, ${end}) ${getLines(data)}`);
 
   return getSlicedInput(data);
 };
