@@ -7,8 +7,8 @@
     <script src="filepond.js" type="application/ecmascript"></script>
     <style>
         .filepond--root {
-            height: calc(66.67vh);
-            font-size: calc(1rem + 1vw + 1vh);
+            height: calc(66.67vh - 3rem);
+            font-size: clamp(2rem, 2vw + 2vh, 4rem);
         }
 
         .filepond--panel-root {
@@ -32,8 +32,8 @@
             background-color: #4495d7;
             color: #f5f5fa;
             width: 100%;
-            height: calc(33.33vh);
-            font-size: calc(1rem + 1vw + 1vh);
+            height: calc(33.33vh - 2rem);
+            font-size: clamp(2rem, 2vw + 2vh, 4rem);
             border-radius: 0.5em;
             box-sizing: border-box;
         }
