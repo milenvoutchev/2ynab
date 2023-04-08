@@ -71,7 +71,7 @@ class DkbGirokontoStrategy extends BaseStrategy {
   async convert(inFile) {
     console.log(`In: ${inFile}`);
 
-    const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd);
+    const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd, 'latin1');
 
     const data = parse(input, SETTINGS);
 
@@ -88,7 +88,28 @@ class DkbGirokontoStrategy extends BaseStrategy {
    * @returns {boolean}
    */
   static isMatch(inFile) {
-    return !!inFile.match(/\d{10}.csv$/g);
+    // Read the first few lines of the file
+    const fileContent = getFileContentsCsv(inFile, 0, 10, 'latin1');
+
+    // Check if the file content matches the expected header pattern
+    const headerPattern = [
+      /^"Kontonummer:";".+";$/,
+      /^"Von:";"\d{2}\.\d{2}\.\d{4}";$/,
+      /^"Bis:";"\d{2}\.\d{2}\.\d{4}";$/,
+      /^"Kontostand vom \d{2}\.\d{2}\.\d{4}:";"[\d,.]+ \w{3}";$/,
+      /^"Buchungstag";"Wertstellung";"Buchungstext";"Auftraggeber \/ Begünstigter";"Verwendungszweck";"Kontonummer";"BLZ";"Betrag \(EUR\)";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz";$/,
+    ];
+
+    // Split the lines and filter out empty lines
+    const lines = fileContent.split("\n").filter(line => line.trim() !== "");
+
+    // Check the header pattern against non-empty lines
+    for (let i = 0; i < headerPattern.length; i++) {
+      if (!headerPattern[i].test(lines[i])) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 

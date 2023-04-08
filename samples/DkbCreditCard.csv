@@ -5,7 +5,7 @@
 "Saldo:";"-12.34 EUR";
 "Datum:";"01.01.2018";
 
-"Umsatz abgerechnet und nicht im Saldo enthalten";"Wertstellung";"Belegdatum";"Beschreibung";"Betrag (EUR)";"Ursprï¿½nglicher Betrag";
+"Umsatz abgerechnet und nicht im Saldo enthalten";"Wertstellung";"Belegdatum";"Beschreibung";"Betrag (EUR)";"Ursprünglicher Betrag";
 "Nein";"01.01.2017";"01.01.2017";"Transaction description";"-123,45";"";
 "Nein";"01.01.2017";"01.01.2017";"Transaction description";"-1,23";"";
 "Ja";"01.01.2017";"01.01.2017";"Transaction description";"-123,45";"-246,90 BGN";

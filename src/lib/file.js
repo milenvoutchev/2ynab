@@ -8,6 +8,7 @@ const getFileContentsCsv = function (inFile, sliceStart = 1, sliceEnd = null, en
   const data = fs.readFileSync(inFile, {
     encoding: encoding
   });
+  // eslint-disable-next-line no-console
   console.log(`Lines: (${sliceStart}, ${end}) ${getLines(data)}`);
 
   return getSlicedInput(data);
@@ -20,6 +21,8 @@ const getFileContentsJson = function (inFile, encoding = 'utf8') {
   return JSON.parse(data);
 };
 
-const writeOut = (outFile, result) => fs.writeFileSync(outFile, result);
+const writeOut = (outFile, result) => {
+  fs.writeFileSync(outFile, result);
+};
 
 module.exports = { getFileContentsCsv, writeOut, getFileContentsJson };

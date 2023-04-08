@@ -16,7 +16,7 @@ const SETTINGS = {
     'amount_foreign_currency_text',
     'empty',
   ],
-  sliceBegin: 7,
+  sliceBegin: 8,
   sliceEnd: Infinity,
   stringifier: {
     header: true,
@@ -66,7 +66,8 @@ class DkbCreditCardStrategy extends BaseStrategy {
   async convert(inFile) {
     console.log(`In: ${inFile}`);
 
-    const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd);
+    const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd, 'latin1');
+    console.log(input);
 
     const data = parse(input, SETTINGS);
 
@@ -81,7 +82,29 @@ class DkbCreditCardStrategy extends BaseStrategy {
    * @returns {boolean}
    */
   static isMatch(inFile) {
-    return !!inFile.match(/\d{4}________\d{4}.csv$/g);
+    // Read the first few lines of the file
+    const fileContent = getFileContentsCsv(inFile, 0, 10, 'latin1');
+
+    // Check if the file content matches the expected header pattern
+    const headerPatterns = [
+      /^"Kreditkarte:";/,
+      /^"Von:";/,
+      /^"Bis:";/,
+      /^"Saldo:";/,
+      /^"Datum:";/,
+      /^"Umsatz abgerechnet und nicht im Saldo enthalten";"Wertstellung";"Belegdatum";"Beschreibung";"Betrag \(EUR\)";"Ursprünglicher Betrag";/
+    ];
+
+    // Split the lines and filter out empty lines
+    const lines = fileContent.split("\n").filter(line => line.trim() !== "");
+
+    // Check the header pattern against non-empty lines
+    for (let i = 0; i < headerPatterns.length; i++) {
+      if (!headerPatterns[i].test(lines[i])) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 

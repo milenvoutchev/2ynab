@@ -5,11 +5,30 @@ const formidable = require("formidable");
 const {getOutFromInfile} = require("../lib/helper");
 const fs = require("fs");
 const os = require("os");
+const DkbGirokontoStrategy = require("../strategy/DkbGirokontoStrategy");
+const DkbCreditCardStrategy = require("../strategy/DkbCreditCardStrategy");
 
 const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 
-const converter = new ConverterFactory('DkbGirokonto');
+// const converter = new ConverterFactory('DkbGirokonto');
+
+// Create an array of available conversion strategies
+const strategies = [
+    new DkbGirokontoStrategy(),
+    new DkbCreditCardStrategy(),
+    // Add other strategies here
+];
+
+// Function to detect the appropriate conversion strategy based on the uploaded file
+function detectStrategy(inFile) {
+    for (const strategy of strategies) {
+        if (strategy.constructor.isMatch(inFile)) {
+            return strategy;
+        }
+    }
+    throw new Error("No matching strategy found");
+}
 
 app.post('/file', async (req, res) => {
     const form = formidable({});
@@ -23,6 +42,8 @@ app.post('/file', async (req, res) => {
             try {
                 const inFile = files.filepond.filepath;
                 const fileId = files.filepond.newFilename;
+                const strategy = detectStrategy(inFile); // Detect the strategy dynamically
+                const converter = new ConverterFactory(strategy.constructor.name);
                 const result = await converter.convert(inFile);
                 const outFile = getOutFromInfile(inFile);
                 fs.writeFileSync(outFile, result);
@@ -32,7 +53,7 @@ app.post('/file', async (req, res) => {
                 res.end(fileId);
             } catch (err) {
                 // eslint-disable-next-line no-console
-                console.error(err.code);
+                console.error(err.message);
                 res.sendStatus(415);
             }
         }
