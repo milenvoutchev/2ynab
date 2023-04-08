@@ -4,7 +4,7 @@
 "Bis:";"31.12.2017";
 "Kontostand vom 31.12.2017:";"1.234,56 EUR";
 
-"Buchungstag";"Wertstellung";"Buchungstext";"Auftraggeber / Begï¿½nstigter";"Verwendungszweck";"Kontonummer";"BLZ";"Betrag (EUR)";"Glï¿½ubiger-ID";"Mandatsreferenz";"Kundenreferenz";
+"Buchungstag";"Wertstellung";"Buchungstext";"Auftraggeber / Begünstigter";"Verwendungszweck";"Kontonummer";"BLZ";"Betrag (EUR)";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz";
 "01.01.2017";"01.01.2017";"Text";"Sender/Beneficiary";"Description";"111111111111";"111111111";"-123,45";"";"";"";
 "01.01.2017";"01.01.2017";"Text";"Sender/Beneficiary";"Description";"111111111111";"111111111";"-12,34";"";"";"";
 "01.01.2017";"01.01.2017";"Text";"Sender/Beneficiary";"Description";"111111111111";"111111111";"-12,34";"";"";"";

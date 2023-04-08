@@ -44,7 +44,10 @@ class BaseStrategy {
       const stringifier = stringify(SETTINGS.stringifier);
       transform(data, lineTransformer)
         .pipe(stringifier)
-        .on('data', buffer => results.push(buffer.toString()))
+        .on('data', buffer => {
+          // const utf8Buffer = iconv.decode(buffer, 'latin1');
+          results.push(buffer.toString());
+        })
         .on('end', () => {
           const result = results.join('');
           resolve(result);
