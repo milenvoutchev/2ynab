@@ -6,12 +6,12 @@ const EpayMicroaccountStrategy = require(`./EpayMicroaccountStrategy.js`);
 const HanseticbankStrategy = require(`./HanseticbankStrategy.js`);
 
 module.exports = {
-  DbCreditCardStrategy,
-  DbDebitCardStrategy,
-  DkbCreditCardStrategy,
-  DkbGirokontoStrategy,
-  EpayMicroaccountStrategy,
-  HanseticbankStrategy,
+    DbCreditCardStrategy,
+    DbDebitCardStrategy,
+    DkbCreditCardStrategy,
+    DkbGirokontoStrategy,
+    EpayMicroaccountStrategy,
+    HanseticbankStrategy,
 };
 
 

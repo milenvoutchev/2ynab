@@ -2,20 +2,17 @@
   "name": "2ynab",
   "version": "0.0.1",
   "dependencies": {
-    "csv": "^6.2.5",
-    "csv-parse": "^4.8.8",
-    "csv-stringify": "^2.1.0",
+    "csv": "^6.2.8",
     "express": "^4.18.2",
     "filepond": "^4.30.4",
     "formidable": "^2.1.1",
     "iconv-lite": "^0.6.3",
     "parse-decimal-number": "^1.0.0",
-    "stream-transform": "^1.0.8",
     "yargs": "^17.6.2"
   },
   "devDependencies": {
     "eslint": "^8.32.0",
-    "eslint-plugin-node": "^5.2.1"
+    "eslint-plugin-node": "^11.1.0"
   },
   "engines": {
     "node": ">=8.8.0"
