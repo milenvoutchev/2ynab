@@ -1,7 +1,8 @@
-const csv = require('csv')
+const csv = require('csv');
+const os = require('os');
 const parse = csv.parse
 const parseDecimalNumber = require('parse-decimal-number');
-const {getFileContentsCsv} = require('../lib/file.js');
+const {getFileContentsCsv, findHeaderInCsv} = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
 
 const SETTINGS = {
@@ -56,6 +57,7 @@ class DkbCreditCardStrategy extends BaseStrategy {
             Math.abs(Math.min(amount, 0)),
             Math.abs(Math.max(amount, 0))
         ];
+        console.log(result);
         return result;
     }
 
@@ -67,12 +69,13 @@ class DkbCreditCardStrategy extends BaseStrategy {
     async convert(inFile) {
         console.log(`In: ${inFile}`);
 
-        const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd, 'latin1');
-        console.log(input);
+        const headerIndex = findHeaderInCsv(inFile,
+            /^"Umsatz abgerechnet und nicht im Saldo enthalten";"Wertstellung";"Belegdatum";"Beschreibung";"Betrag \(EUR\)";"Ursprünglicher Betrag";/,
+            'latin1'
+        )
+        const input = getFileContentsCsv(inFile, headerIndex + 1, SETTINGS.sliceEnd, 'latin1');
 
         const parser = parse(input, SETTINGS);
-
-        console.log(`Transform: ${parser}`);
 
         return await super.transformAsync(parser, DkbCreditCardStrategy.lineTransform);
     }
@@ -96,16 +99,27 @@ class DkbCreditCardStrategy extends BaseStrategy {
             /^"Umsatz abgerechnet und nicht im Saldo enthalten";"Wertstellung";"Belegdatum";"Beschreibung";"Betrag \(EUR\)";"Ursprünglicher Betrag";/
         ];
 
+        // Check if the file content matches the expected header pattern
+        const headerPatternsAlt = [
+            /^"Kreditkarte:";/,
+            /^"Zeitraum:";/,
+            /^"Saldo:";/,
+            /^"Datum:";/,
+            /^"Umsatz abgerechnet und nicht im Saldo enthalten";"Wertstellung";"Belegdatum";"Beschreibung";"Betrag \(EUR\)";"Ursprünglicher Betrag";/
+        ];
+
         // Split the lines and filter out empty lines
-        const lines = fileContent.split("\n").filter(line => line.trim() !== "");
+        const lines = fileContent.split(os.EOL).filter(line => line.trim() !== "");
 
         // Check the header pattern against non-empty lines
-        for (let i = 0; i < headerPatterns.length; i++) {
-            if (!headerPatterns[i].test(lines[i])) {
-                return false;
-            }
-        }
-        return true;
+        const preambleMatch = !headerPatterns
+            .map((pattern, index) => pattern.test(lines[index]))
+            .includes(false);
+        const preambleAltMatch = !headerPatternsAlt
+            .map((pattern, index) => pattern.test(lines[index]))
+            .includes(false);
+
+        return preambleMatch || preambleAltMatch
     }
 }
 

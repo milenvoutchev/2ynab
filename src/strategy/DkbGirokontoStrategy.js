@@ -76,11 +76,7 @@ class DkbGirokontoStrategy extends BaseStrategy {
 
         const data = parse(input, SETTINGS);
 
-        console.log(`Transform: ${data.length}`);
-
-        const result = await super.transformAsync(data, DkbGirokontoStrategy.lineTransform);
-
-        return result;
+        return await super.transformAsync(data, DkbGirokontoStrategy.lineTransform);
     }
 
     /**
