@@ -7,6 +7,7 @@
     "filepond": "^4.30.4",
     "formidable": "^2.1.1",
     "iconv-lite": "^0.6.3",
+    "luxon": "^3.3.0",
     "parse-decimal-number": "^1.0.0",
     "yargs": "^17.6.2"
   },

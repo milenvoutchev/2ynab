@@ -3,24 +3,25 @@ const parse = csv.parse
 const parseDecimalNumber = require('parse-decimal-number');
 const {getFileContentsCsv} = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
+const os = require("os");
+const { DateTime } = require("luxon");
 
 const SETTINGS = {
     delimiter: ';',
     skip_empty_lines: true,
     skip_lines_with_empty_values: true,
     columns: [
-        'buchungstag',
-        'wertstellung',
-        'buchungstext',
-        'auftraggeber_beguenstiger',
+        'buchtungsdatum',
+        'weststellung',
+        'status',
+        'zahlungspflicht',
+        'zahlungsempfang',
         'verwendungszweck',
-        'kontonummer',
-        'blz',
+        'umsatztyp',
         'betrag_eur',
         'glaubiger_id',
         'mandatsreferenz',
         'kundenreferenz',
-        'empty',
     ],
     sliceBegin: 7,
     sliceEnd: Infinity,
@@ -38,11 +39,11 @@ const SETTINGS = {
     }
 };
 
-class DkbGirokontoStrategy extends BaseStrategy {
+class DkbGirokontoStrategy2023 extends BaseStrategy {
 
     constructor() {
         super();
-        console.log('DkbGirokontoStrategy');
+        console.log('DkbGirokontoStrategy2023');
     }
 
     /**
@@ -51,11 +52,13 @@ class DkbGirokontoStrategy extends BaseStrategy {
      * @returns {*[]}
      */
     static lineTransform(data) {
-        const amount = parseDecimalNumber(data.betrag_eur, ".,");
+        const betrag_eur = data.betrag_eur.replace("\u00A0€", "");
+        const amount = parseDecimalNumber(betrag_eur, ".,");
+        const date = DateTime.fromFormat(data.buchtungsdatum, "dd.MM.yy");
         const memo = data.verwendungszweck;
         return [
-            data.buchungstag,
-            data.auftraggeber_beguenstiger,
+            date.toISODate(),
+            data.zahlungsempfang,
             '',
             memo,
             Math.abs(Math.min(amount, 0)),
@@ -71,11 +74,11 @@ class DkbGirokontoStrategy extends BaseStrategy {
     async convert(inFile) {
         console.log(`In: ${inFile}`);
 
-        const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd, 'latin1');
+        const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd, 'utf-8');
 
         const data = parse(input, SETTINGS);
 
-        return await super.transformAsync(data, DkbGirokontoStrategy.lineTransform);
+        return await super.transformAsync(data, DkbGirokontoStrategy2023.lineTransform);
     }
 
     /**
@@ -85,19 +88,20 @@ class DkbGirokontoStrategy extends BaseStrategy {
      */
     static isMatch(inFile) {
         // Read the first few lines of the file
-        const fileContent = getFileContentsCsv(inFile, 0, 10, 'latin1');
+        const fileContent = getFileContentsCsv(inFile, 0, 10, 'utf-8');
 
         // Check if the file content matches the expected header pattern
         const headerPattern = [
-            /^"Kontonummer:";".+";$/,
-            /^"Von:";"\d{2}\.\d{2}\.\d{4}";$/,
-            /^"Bis:";"\d{2}\.\d{2}\.\d{4}";$/,
-            /^"Kontostand vom \d{2}\.\d{2}\.\d{4}:";"[\d,.]+ \w{3}";$/,
-            /^"Buchungstag";"Wertstellung";"Buchungstext";"Auftraggeber \/ Begünstigter";"Verwendungszweck";"Kontonummer";"BLZ";"Betrag \(EUR\)";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz";$/,
+            /^"Konto";".+[A-Z]{2}[0-9]{20}"$/,
+            /^""$/,
+            /^"Kontostand vom \d{2}\.\d{2}\.\d{4}:";"[\d,.]+ \w{3}"$/,
+            /^""$/,
+            /^"Buchungsdatum";"Wertstellung";"Status";"Zahlungspflichtige\*r";"Zahlungsempfänger\*in";"Verwendungszweck";"Umsatztyp";"Betrag";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz"$/,
         ];
 
         // Split the lines and filter out empty lines
-        const lines = fileContent.split("\n").filter(line => line.trim() !== "");
+        const lines = fileContent.split(os.EOL).map(line => line.trim()).filter(line => line !== "");
+        // console.log(lines);
 
         // Check the header pattern against non-empty lines
         for (let i = 0; i < headerPattern.length; i++) {
@@ -109,4 +113,4 @@ class DkbGirokontoStrategy extends BaseStrategy {
     }
 }
 
-module.exports = DkbGirokontoStrategy;
+module.exports = DkbGirokontoStrategy2023;
