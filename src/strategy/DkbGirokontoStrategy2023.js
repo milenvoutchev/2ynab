@@ -23,7 +23,7 @@ const SETTINGS = {
         'mandatsreferenz',
         'kundenreferenz',
     ],
-    sliceBegin: 7,
+    sliceBegin: 5,
     sliceEnd: Infinity,
     stringifier: {
         header: true,
@@ -36,7 +36,8 @@ const SETTINGS = {
             'Outflow',
             'Inflow'
         ],
-    }
+    },
+    on_record: (record, ) => record.status !== 'Gebucht' ? null: record
 };
 
 class DkbGirokontoStrategy2023 extends BaseStrategy {

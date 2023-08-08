@@ -19,7 +19,7 @@ const SETTINGS = {
         'betrag_eur',
         'betrag_fremdwaehrung',
     ],
-    sliceBegin: 7,
+    sliceBegin: 5,
     sliceEnd: Infinity,
     stringifier: {
         header: true,
@@ -32,7 +32,8 @@ const SETTINGS = {
             'Outflow',
             'Inflow'
         ],
-    }
+    },
+    on_record: (record, ) => record.status !== 'Gebucht' ? null: record
 };
 
 class DkbCreditCardStrategy2023 extends BaseStrategy {
