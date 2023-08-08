@@ -11,8 +11,8 @@ const SETTINGS = {
     skip_empty_lines: true,
     skip_lines_with_empty_values: true,
     columns: [
-        'buchtungsdatum',
-        'weststellung',
+        'buchungsdatum',
+        'wertstellung',
         'status',
         'zahlungspflicht',
         'zahlungsempfang',
@@ -54,7 +54,7 @@ class DkbGirokontoStrategy2023 extends BaseStrategy {
     static lineTransform(data) {
         const betrag_eur = data.betrag_eur.replace("\u00A0€", "");
         const amount = parseDecimalNumber(betrag_eur, ".,");
-        const date = DateTime.fromFormat(data.buchtungsdatum, "dd.MM.yy");
+        const date = DateTime.fromFormat(data.buchungsdatum, "dd.MM.yy");
         const memo = data.verwendungszweck;
         return [
             date.toISODate(),
@@ -92,16 +92,15 @@ class DkbGirokontoStrategy2023 extends BaseStrategy {
 
         // Check if the file content matches the expected header pattern
         const headerPattern = [
-            /^"Konto";".+[A-Z]{2}[0-9]{20}"$/,
+            /^"Konto";/,
             /^""$/,
-            /^"Kontostand vom \d{2}\.\d{2}\.\d{4}:";"[\d,.]+ \w{3}"$/,
+            /^"Kontostand vom \d{2}\.\d{2}\.\d{4}:";/,
             /^""$/,
             /^"Buchungsdatum";"Wertstellung";"Status";"Zahlungspflichtige\*r";"Zahlungsempfänger\*in";"Verwendungszweck";"Umsatztyp";"Betrag";"Gläubiger-ID";"Mandatsreferenz";"Kundenreferenz"$/,
         ];
 
         // Split the lines and filter out empty lines
         const lines = fileContent.split(os.EOL).map(line => line.trim()).filter(line => line !== "");
-        // console.log(lines);
 
         // Check the header pattern against non-empty lines
         for (let i = 0; i < headerPattern.length; i++) {

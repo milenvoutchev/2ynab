@@ -8,6 +8,7 @@ const os = require("os");
 const DkbGirokontoStrategy = require("../strategy/DkbGirokontoStrategy");
 const DkbCreditCardStrategy = require("../strategy/DkbCreditCardStrategy");
 const DkbGirokontoStrategy2023 = require("../strategy/DkbGirokontoStrategy2023");
+const DkbCreditCardStrategy2023 = require("../strategy/DkbCreditCardStrategy2023");
 
 const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
@@ -19,6 +20,7 @@ const strategies = [
     new DkbGirokontoStrategy(),
     new DkbCreditCardStrategy(),
     new DkbGirokontoStrategy2023(),
+    new DkbCreditCardStrategy2023(),
     // Add other strategies here
 ];
 
