@@ -8,20 +8,20 @@ const SETTINGS = {
   skip_empty_lines: true,
   skip_lines_with_empty_values: true,
   columns: [
-    'buchungstag',
+    'buchungsdatum',
     'wertstellung',
-    'buchungstext',
-    'auftraggeber_beguenstiger',
+    'status',
+    'zahlungspflichtiger',
+    'zahlungsempfaenger',
     'verwendungszweck',
-    'kontonummer',
-    'blz',
+    'umsatztyp',
+    'iban',
     'betrag_eur',
-    'glaubiger_id',
+    'glaeubiger_id',
     'mandatsreferenz',
     'kundenreferenz',
-    'empty',
   ],
-  sliceBegin: 7,
+  sliceBegin: 5,
   sliceEnd: Infinity,
   stringifier: {
     header: true,
@@ -52,13 +52,21 @@ class DkbGirokontoStrategy extends BaseStrategy {
   static lineTransform(data) {
     const amount = parseDecimalNumber(data.betrag_eur, ".,");
     const memo = data.verwendungszweck;
+    const payee = data.zahlungsempfaenger;
+
+    // Convert date format from DD.MM.YY to DD/MM/YY (YNAB compatible)
+    const date = data.wertstellung.replace(/\./g, '/');
+
+    const outflow = Math.abs(Math.min(amount, 0));
+    const inflow = Math.abs(Math.max(amount, 0));
+
     const result = [
-      data.buchungstag,
-      data.auftraggeber_beguenstiger,
+      date,
+      payee,
       '',
       memo,
-      Math.abs(Math.min(amount, 0)),
-      Math.abs(Math.max(amount, 0))
+      outflow > 0 ? outflow : '',
+      inflow > 0 ? inflow : ''
     ];
     return result;
   }
@@ -78,7 +86,15 @@ class DkbGirokontoStrategy extends BaseStrategy {
 
     console.log(`Transform: ${data.length}`);
 
-    const result = await super.transformAsync(data, DkbGirokontoStrategy.lineTransform);
+    // Filter out zero-amount rows (opening balance)
+    const filteredData = data.filter(row => {
+      const amount = parseDecimalNumber(row.betrag_eur, ".,");
+      return amount !== 0;
+    });
+
+    console.log(`After filtering: ${filteredData.length}`);
+
+    const result = await super.transformAsync(filteredData, DkbGirokontoStrategy.lineTransform);
 
     writeOut(outFile, result);
     console.log(`Written: ${outFile}`);
@@ -90,8 +106,8 @@ class DkbGirokontoStrategy extends BaseStrategy {
    * @returns {boolean}
    */
   static isMatch(inFile) {
-    // Match legacy pattern: exactly 10 digits followed by .csv (e.g., 1234567890.csv)
-    return !!inFile.match(/^[0-9]{10}\.csv$/);
+    // Match pattern: DD-MM-YYYY_Umsatzliste_*_DE<20 digits>.csv
+    return !!inFile.match(/[0-9]{2}-[0-9]{2}-[0-9]{4}_Umsatzliste_[\S]*_DE[0-9]{20}.*\.csv$/);
   }
 }
 

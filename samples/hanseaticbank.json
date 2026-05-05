@@ -1,32 +1,83 @@
-[
-  {
-    "bookingdate": "2022-01-30",
-    "transactiondate": "",
-    "amount": 123.45,
-    "type": "LS_EINZUG",
-    "description": "Kartenabrechnung 01\/2022 Hanseatic Bank",
-    "transactionId": "",
-    "currencyCode": 978,
-    "primanota": "8038",
-    "refiban": "XXXXXX",
-    "refbic": "XXXXXX",
-    "counteraccount": "",
-    "interestamount": 0,
-    "interestrate": 0
-  },
-  {
-    "bookingdate": "2022-01-30",
-    "transactiondate": "2022-01-28",
-    "amount": -1.23,
-    "type": "KARTEN_UMS_",
-    "description": "ACME STORE & CO.",
-    "transactionId": "XXXXXX",
-    "currencyCode": 978,
-    "primanota": "3400",
-    "refiban": "",
-    "refbic": "",
-    "counteraccount": "XXXXXX",
-    "interestamount": 0,
-    "interestrate": 0
-  }
-]
+{
+  "transactions": [
+    {
+      "transactionDate": "10.04.2023",
+      "transactionTime": "12:50",
+      "date": "12.04.2023",
+      "amount": -11.2,
+      "creditDebitKey": "KARTEN-UMS.",
+      "creditDebitKeyPhraseCompatible": "KARTEN_UMS_",
+      "booked": true,
+      "description": "XXXXX",
+      "transactionId": "1234",
+      "currencyCode": 978,
+      "merchantName": "XXXXX",
+      "merchantData": {
+        "id": "1234",
+        "name": "XXXXX",
+        "website": "",
+        "img": "XXXXX",
+        "categoryImg": "XXXXX",
+        "category": "Groceries",
+        "categories": [
+          "bakery"
+        ]
+      },
+      "location": " Berlin DEU",
+      "city": "BERLIN",
+      "postcode": "",
+      "country": "DEU",
+      "mcc": "5462",
+      "recipientBic": "",
+      "recipientIban": "",
+      "recipientName": "",
+      "creditorID": "",
+      "mandateReference": "",
+      "conversionRate": null,
+      "foreignAmount": "11,20 EUR",
+      "transactionDateTime": "2023-04-12T00:00:00+00:00",
+      "accountingMonth": "04.2023"
+    },
+    {
+      "transactionDate": "10.04.2023",
+      "transactionTime": "11:00",
+      "date": "12.04.2023",
+      "amount": -9.82,
+      "creditDebitKey": "KARTEN-UMS.",
+      "creditDebitKeyPhraseCompatible": "KARTEN_UMS_",
+      "booked": true,
+      "description": "XXXXX",
+      "transactionId": "1234",
+      "currencyCode": 978,
+      "merchantName": "XXXXX",
+      "merchantData": {
+        "id": "1234",
+        "name": "XXXXX",
+        "website": "XXXXX",
+        "img": "XXXXX",
+        "categoryImg": "XXXXX",
+        "category": "Mobility",
+        "categories": [
+          "car_rental"
+        ]
+      },
+      "location": " XXXXX DEU",
+      "city": "XXXXX",
+      "postcode": "",
+      "country": "DEU",
+      "mcc": "7512",
+      "recipientBic": "",
+      "recipientIban": "",
+      "recipientName": "",
+      "creditorID": "",
+      "mandateReference": "",
+      "conversionRate": null,
+      "foreignAmount": "9,82 EUR",
+      "transactionDateTime": "2023-04-12T00:00:00+00:00",
+      "accountingMonth": "04.2023"
+    }
+  ],
+  "reservations": [],
+  "more": true,
+  "moreWithSCA": false
+}

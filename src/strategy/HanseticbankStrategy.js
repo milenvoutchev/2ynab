@@ -13,16 +13,23 @@ class HanseaticbankStrategy extends BaseStrategy {
    * @param data
    * @returns {*[]}
    */
-  static lineTransform(data) {
-    const payee = HanseaticbankStrategy.getPayee(data.description)
-    const memo = HanseaticbankStrategy.getMemo(data.description)
+  static lineTransform(transaction) {
+    if (!transaction.booked)
+    {
+      return;
+    }
+    const date = transaction.transactionDate || transaction.date;
+    const payee = HanseaticbankStrategy.getPayee(transaction);
+    const category = transaction.merchantData.category || "";
+    const memo = HanseaticbankStrategy.getMemo(transaction);
+    // Date,Payee,Category,Memo,Outflow,Inflow
     const result = [
-      data.transactiondate || data.bookingdate,
+      date,
       payee,
-      "",
-      `${data.bookingdate} ${memo}`,
-      Math.abs(Math.min(data.amount, 0)),
-      Math.abs(Math.max(data.amount, 0))
+      category,
+      memo,
+      Math.abs(Math.min(transaction.amount, 0)),
+      Math.abs(Math.max(transaction.amount, 0))
     ];
 
     return result;
@@ -38,10 +45,11 @@ class HanseaticbankStrategy extends BaseStrategy {
     console.log(`In: ${inFile}`);
 
     const data = getFileContentsJson(inFile);
+    const transactions = data.transactions;
 
-    console.log(`Transform: ${data.length}`);
+    console.log(`Transform: ${transactions.length}`);
 
-    const result = await super.transformAsync(data, HanseaticbankStrategy.lineTransform);
+    const result = await super.transformAsync(transactions, HanseaticbankStrategy.lineTransform);
 
     writeOut(outFile, result);
     console.log(`Written: ${outFile}`);
@@ -56,28 +64,35 @@ class HanseaticbankStrategy extends BaseStrategy {
     return !!inFile.match(/hanseaticbank\.json$/g);
   }
 
-  static getPayee(description) {
-    const matchReconsciliation = description.match(/Kartenabrechnung \d{2}\/\d{4} Hanseatic Bank/)
-
-    if (matchReconsciliation) {
-      return "Hanseatic Bank";
+  static getPayee({ merchantName, merchantData, description }) {
+    if (merchantData && merchantData.name)
+    {
+        return merchantData.name;
     }
 
-    const matchForeignCurrency = description.match(/(.*) \d+,\d{2} \w{3}/)
-    if (matchForeignCurrency) {
-      return matchForeignCurrency[1];
+    if (merchantName)
+    {
+      return merchantName;
     }
+
+    // @comment merchantData.name already is Hanseatic Bank for Kartenabrechnung
+    // if (description.match(/Kartenabrechnung \d{2}\/\d{4} Hanseatic Bank/)) {
+    //   return "Hanseatic Bank";
+    // }
 
     return description;
   }
 
-  static getMemo(description) {
-    const matchForeignCurrency = description.match(/(.*) (\d+,\d{2} \w{3})/)
-    if (matchForeignCurrency) {
-      return matchForeignCurrency[2];
-    }
+  static getMemo({ description }) {
+    return description;
 
-    return "";
+    // @comment description already contains foreignCurrency when foreign
+    // const matchForeignCurrency = description.match(/(.*) (\d+,\d{2} \w{3})/)
+    // if (matchForeignCurrency) {
+    //   return matchForeignCurrency[2];
+    // }
+    //
+    // return "";
   }
 }
 
