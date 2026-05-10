@@ -1,54 +1,28 @@
 const transform = require('stream-transform');
 const stringify = require('csv-stringify');
 
-const SETTINGS = {
-  delimiter: ';',
-  skip_empty_lines: true,
-  skip_lines_with_empty_values: true,
-  columns: [
-    'date_document',
-    'date_receipt',
-    'comment',
-    'foreign_currency',
-    'amount_foreign_currency',
-    'exchange_rate',
-    'amount',
-    'currency'
-  ],
-  sliceBegin: 5,
-  sliceEnd: -2,
-  stringifier: {
-    header: true,
-    delimiter: ',',
-    columns: [
-      'Date',
-      'Payee',
-      'Category',
-      'Memo',
-      'Outflow',
-      'Inflow'
-    ],
-  }
+const YNAB_STRINGIFIER = {
+  header: true,
+  delimiter: ',',
+  columns: ['Date', 'Payee', 'Category', 'Memo', 'Outflow', 'Inflow'],
 };
 
 class BaseStrategy {
   /**
-   *
-   * @param data
-   * @param lineTransformer
-   * @returns {Promise<any>}
+   * @param {Array} data
+   * @param {Function} lineTransformer
+   * @returns {Promise<string>}
    */
-  transformAsync(data, lineTransformer = (data) => data) {
-    return new Promise(function (resolve, reject) {
+  transformAsync(data, lineTransformer = (row) => row) {
+    return new Promise((resolve, reject) => {
       const results = [];
-      const stringifier = stringify(SETTINGS.stringifier);
+      const stringifier = stringify(YNAB_STRINGIFIER);
       transform(data, lineTransformer)
+        .on('error', reject)
         .pipe(stringifier)
+        .on('error', reject)
         .on('data', buffer => results.push(buffer.toString()))
-        .on('end', () => {
-          const result = results.join('');
-          resolve(result);
-        });
+        .on('end', () => resolve(results.join('')));
     });
   }
 }

@@ -1,91 +1,37 @@
-const parse = require('csv-parse/lib/sync');
 const parseDecimalNumber = require('parse-decimal-number');
-const { getFileContentsCsv, writeOut } = require('../lib/file.js');
-const BaseStrategy = require('./BaseStrategy');
+const { loadCsvConfig, getBankConfig } = require('../lib/configLoader.js');
+const CsvStrategy = require('./CsvStrategy');
 
-const SETTINGS = {
-  delimiter: ';',
-  skip_empty_lines: true,
-  skip_lines_with_empty_values: true,
-  columns: [
-    'im_saldo',
-    'date_document',
-    'date_receipt',
-    'description',
-    'amount_eur',
-    'amount_foreign_currency_text',
-    'empty',
-  ],
-  sliceBegin: 7,
-  sliceEnd: Infinity,
-  stringifier: {
-    header: true,
-    delimiter: ',',
-    columns: [
-      'Date',
-      'Payee',
-      'Category',
-      'Memo',
-      'Outflow',
-      'Inflow'
-    ],
-  }
-};
+const SETTINGS = loadCsvConfig('DE Deutsche Kreditbank credit card', getBankConfig);
 
-class DkbCreditCardStrategy extends BaseStrategy {
+class DkbCreditCardStrategy extends CsvStrategy {
 
   constructor() {
-    super();
+    super(SETTINGS);
     console.log('DkbCreditCardStrategy');
   }
 
   /**
-   *
-   * @param data
-   * @returns {*[]}
+   * E.g. 1234________1234.csv
+   */
+  static get filenamePattern() {
+    return SETTINGS.filenamePattern;
+  }
+
+  /**
+   * @param {object} data - parsed CSV row keyed by semantic column names (Date, Memo, Inflow)
+   * @returns {Array} YNAB row: [Date, Payee, Category, Memo, Outflow, Inflow]
    */
   static lineTransform(data) {
-    const amount = parseDecimalNumber(data.amount_eur, ".,");
-    const memo = data.amount_foreign_currency_text;
-    const result = [
-      data.date_receipt,
-      data.description,
+    const amount = parseDecimalNumber(data.Inflow, ".,");
+    return [
+      data.Date,
       '',
-      memo,
+      '',
+      data.Memo,
       Math.abs(Math.min(amount, 0)),
       Math.abs(Math.max(amount, 0))
     ];
-    return result;
-  }
-
-  /**
-   *
-   * @param inFile
-   * @param outFile
-   * @returns {Promise<void>}
-   */
-  async convert(inFile, outFile) {
-    console.log(`In: ${inFile}`);
-
-    const input = getFileContentsCsv(inFile, SETTINGS.sliceBegin, SETTINGS.sliceEnd);
-
-    const data = parse(input, SETTINGS);
-
-    console.log(`Transform: ${data.length}`);
-
-    const result = await super.transformAsync(data, DkbCreditCardStrategy.lineTransform);
-
-    writeOut(outFile, result);
-    console.log(`Written: ${outFile}`);
-  }
-
-  /**
-   *
-   * @param inFile
-   * @returns {boolean}
-   */
-  static isMatch(inFile) {
-    return !!inFile.match(/\d{4}________\d{4}.csv$/g);
   }
 }
 

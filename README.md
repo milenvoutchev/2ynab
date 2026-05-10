@@ -61,5 +61,19 @@ Find the request (it has the number of your account in the request URL) and save
 $ node 2ynab.js hanseaticbank-or-so.json HanseaticBank
 ```
 
+#### HanseaticBank PDF (Kontoauszug)
+
+HanseaticBank does send monthly PDF account statements (Kontoauszug) over email. These are named like `Kontoauszug-GenialCard-YYYY-MM_<account>.pdf` and are automatically detected:
+
+```
+$ node 2ynab.js Kontoauszug-GenialCard-2026-04_1234567890.pdf
+```
+
+Or explicitly:
+
+```
+$ node 2ynab.js Kontoauszug-GenialCard-2026-04_1234567890.pdf HanseticbankPdf
+```
+
 ## Alternatives
 If you've made it here, chances are you might be interested in conversion tools for your bank or YNAB. So why don't you also check out this useful tool: https://github.com/bank2ynab/bank2ynab
