@@ -34,7 +34,7 @@ class DkbGirokonto2026Strategy extends CsvStrategy {
   }
 
   /**
-   * @param {object} data - parsed CSV row keyed by column names (Date, Payee, Memo, Inflow)
+   * @param {object} data - parsed CSV row keyed by column names (Date, Payer, Payee, Memo, Inflow)
    * @returns {Array} YNAB row: [Date, Payee, Category, Memo, Outflow, Inflow]
    */
   static lineTransform(data) {
@@ -42,8 +42,9 @@ class DkbGirokonto2026Strategy extends CsvStrategy {
     const date    = DkbGirokonto2026Strategy.convertDate(data.Date);
     const outflow = Math.abs(Math.min(amount, 0));
     const inflow  = Math.abs(Math.max(amount, 0));
+    const payee   = amount > 0 ? data.Payer : data.Payee;
 
-    return [date, data.Payee, '', data.Memo, outflow > 0 ? outflow : '', inflow > 0 ? inflow : ''];
+    return [date, payee, '', data.Memo, outflow > 0 ? outflow : '', inflow > 0 ? inflow : ''];
   }
 }
 

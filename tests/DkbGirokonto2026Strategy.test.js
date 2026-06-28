@@ -52,6 +52,7 @@ describe('DkbGirokonto2026Strategy', () => {
      test('should handle outflow (negative amounts)', () => {
        const data = {
          Date: '30.04.26',
+         Payer: 'Income Counterparty',
          Payee: 'Payee',
          Memo: 'Memo',
          Inflow: '-123,45'
@@ -65,19 +66,22 @@ describe('DkbGirokonto2026Strategy', () => {
      test('should handle inflow (positive amounts)', () => {
        const data = {
          Date: '28.04.26',
-         Payee: 'Payee',
+         Payer: 'VERISK PROPERTY GMBH',
+         Payee: 'VOUTCHEV MILEN',
          Memo: 'Memo',
          Inflow: '1234,56'
        };
 
        const result = DkbGirokonto2026Strategy.lineTransform(data);
+       expect(result[1]).toBe('VERISK PROPERTY GMBH');
        expect(result[4]).toBe(''); // Empty outflow
        expect(result[5]).toBe(1234.56); // Inflow
      });
 
-     test('should use Payee field', () => {
+     test('should use Payee field for outflows', () => {
        const data = {
          Date: '30.04.26',
+         Payer: 'Income Counterparty',
          Payee: 'Jane Doe',
          Memo: 'Memo',
          Inflow: '-100,00'
@@ -90,6 +94,7 @@ describe('DkbGirokonto2026Strategy', () => {
      test('should use Memo field', () => {
        const data = {
          Date: '30.04.26',
+         Payer: 'Income Counterparty',
          Payee: 'Payee',
          Memo: 'Payment for invoice #123',
          Inflow: '-50,00'
@@ -102,6 +107,7 @@ describe('DkbGirokonto2026Strategy', () => {
      test('should have empty category field', () => {
        const data = {
          Date: '30.04.26',
+         Payer: 'Income Counterparty',
          Payee: 'Payee',
          Memo: 'Memo',
          Inflow: '-100,00'
@@ -126,6 +132,9 @@ describe('DkbGirokonto2026Strategy', () => {
       expect(content).toContain('30/04/26');
       expect(content).toContain('28/04/26');
       expect(content).toContain('23/04/26');
+
+      // Check positive transactions use the payer as payee
+      expect(content).toContain('28/04/26,John Doe,,verwendungszweck,,1234.12');
 
       // Check amounts
       expect(content).toContain('123.12');
@@ -216,4 +225,3 @@ describe('Strategy Pattern Separation', () => {
     });
   });
 });
-

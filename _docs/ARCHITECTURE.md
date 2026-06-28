@@ -28,7 +28,7 @@ All CSV strategies use **semantic column names** from `Input Columns`:
 Example from `bank2ynab.conf`:
 ```
 [DE Deutsche Kreditbank checking new]
-Input Columns = skip,Date,skip,skip,Payee,Memo,skip,skip,Inflow,skip,skip,skip
+Input Columns = skip,Date,Status,Payer,Payee,Memo,skip,skip,Inflow,skip,skip,skip
 Date Format = %d.%m.%y
 ```
 
@@ -77,4 +77,3 @@ Each strategy only implements:
 - YNAB CSV format compliance
 
 Run tests: `npm test`
-
