@@ -111,6 +111,35 @@ describe('HanseticbankPdfStrategy', () => {
     });
   });
 
+  describe('extractSaldi', () => {
+    test('should extract Alter Saldo and Neuer Saldo', () => {
+      const text = 'Umsätze\nAlter Saldo -849,51\n...\nNeuer Saldo -1.493,92\n';
+      expect(HanseticbankPdfStrategy.extractSaldi(text)).toEqual({
+        alterSaldo: -849.51,
+        neuerSaldo: -1493.92,
+      });
+    });
+
+    test('should throw when Alter/Neuer Saldo is missing', () => {
+      expect(() => HanseticbankPdfStrategy.extractSaldi('no balances here')).toThrow();
+    });
+  });
+
+  describe('reconcile', () => {
+    test('should reconcile the sample PDF and compute a running balance', async () => {
+      const result = await HanseticbankPdfStrategy.reconcile(SAMPLE_PDF);
+
+      expect(result.file).toBe(SAMPLE_PDF);
+      expect(result.reconciled).toBe(true);
+      expect(result.transactions.length).toBeGreaterThan(0);
+
+      const runningTotal = result.transactions[result.transactions.length - 1].runningBalance;
+      expect(Math.abs(runningTotal - result.neuerSaldo)).toBeLessThan(0.005);
+
+      result.transactions.forEach(tx => expect(typeof tx.runningBalance).toBe('number'));
+    });
+  });
+
   describe('convert', () => {
     const strategy  = new HanseticbankPdfStrategy();
     const outputFile = path.join(__dirname, '../samples/test-hanseaticbank-pdf-output.csv');

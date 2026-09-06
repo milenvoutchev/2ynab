@@ -59,6 +59,51 @@ class HanseticbankPdfStrategy extends BaseStrategy {
   }
 
   /**
+   * Extracts the statement's opening and closing balances from its raw text.
+   * @param {string} text - full text of the statement PDF (via getText())
+   * @returns {{alterSaldo: number, neuerSaldo: number}}
+   */
+  static extractSaldi(text) {
+    const alterMatch = text.match(/Alter Saldo\s*(-?[\d.,]+)/);
+    const neuerMatch = text.match(/Neuer Saldo\s*(-?[\d.,]+)/);
+
+    if (!alterMatch || !neuerMatch) {
+      throw new Error('Could not find Alter Saldo / Neuer Saldo in statement text');
+    }
+
+    return {
+      alterSaldo: parseIntlNumber(alterMatch[1]),
+      neuerSaldo: parseIntlNumber(neuerMatch[1]),
+    };
+  }
+
+  /**
+   * Reconciles a single statement PDF: parses its transactions, computes a
+   * running balance starting from Alter Saldo, and checks it lands on Neuer Saldo.
+   *
+   * @param {string} inFile - absolute or relative path to the PDF
+   * @returns {Promise<object>} - { file, alterSaldo, neuerSaldo, reconciled, transactions }
+   */
+  static async reconcile(inFile) {
+    const parser = new PDFParse({ url: inFile });
+    const { text } = await parser.getText();
+    const { alterSaldo, neuerSaldo } = HanseticbankPdfStrategy.extractSaldi(text);
+
+    const rows = await HanseticbankPdfStrategy.parsePdf(inFile);
+    const transactions = HanseticbankPdfStrategy.parseTransactions(rows);
+
+    let running = alterSaldo;
+    const withRunningBalance = transactions.map(transaction => {
+      running += transaction.amount;
+      return { ...transaction, runningBalance: Math.round(running * 100) / 100 };
+    });
+
+    const reconciled = Math.abs(running - neuerSaldo) < 0.005;
+
+    return { file: inFile, alterSaldo, neuerSaldo, reconciled, transactions: withRunningBalance };
+  }
+
+  /**
    * Maps a parsed transaction object to a YNAB CSV row.
    * [Date, Payee, Category, Memo, Outflow, Inflow]
    *
