@@ -40,25 +40,24 @@ describe('HanseaticbankJsonStrategy', () => {
         expectations: { date: '10.04.2023' }
       },
       {
-        name: 'use merchantData.name as payee',
+        name: 'use merchantName as payee',
         transaction: {
           booked: true,
           transactionDate: '10.04.2023',
           amount: -11.2,
-          merchantData: { name: 'Supermarket', category: 'Groceries' },
-          merchantName: 'Old Name',
+          merchantData: { name: 'Old Name', category: 'Groceries' },
+          merchantName: 'Supermarket',
           description: 'Purchase'
         },
         expectations: { payee: 'Supermarket' }
       },
       {
-        name: 'fallback to merchantName when merchantData.name missing',
+        name: 'fallback to merchantData.name when merchantName missing',
         transaction: {
           booked: true,
           transactionDate: '10.04.2023',
           amount: -11.2,
-          merchantData: { category: 'Groceries' },
-          merchantName: 'Fallback Name',
+          merchantData: { name: 'Fallback Name', category: 'Groceries' },
           description: 'Purchase'
         },
         expectations: { payee: 'Fallback Name' }

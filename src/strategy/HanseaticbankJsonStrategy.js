@@ -65,14 +65,14 @@ class HanseaticbankJsonStrategy extends BaseStrategy {
   }
 
   static getPayee({ merchantName, merchantData, description }) {
-    if (merchantData && merchantData.name)
-    {
-        return merchantData.name;
-    }
-
     if (merchantName)
     {
       return merchantName;
+    }
+
+    if (merchantData && merchantData.name)
+    {
+        return merchantData.name;
     }
 
     // @comment merchantData.name already is Hanseatic Bank for Kartenabrechnung
