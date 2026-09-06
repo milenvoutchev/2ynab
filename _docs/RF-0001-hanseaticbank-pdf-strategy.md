@@ -7,7 +7,7 @@ Added `HanseticbankPdfStrategy` to convert HanseaticBank PDF statements (Kontoau
 - **Library**: `pdf-parse` v2 with `getTable()` for structured extraction
 - **Row Detection**: Identifies transactions by 5-column format; skips headers/balance rows
 - **Field Mapping**:
-  - Column 0 → Date (Buchungsdatum)
+  - Column 1 → Date (Transaktionsdatum), falls back to Column 0 (Buchungsdatum) for Gutschrift rows that have no Transaktionsdatum
   - Column 2 (split) → Payee & Memo
   - Column 3 → Card suffix (appended to Memo)
   - Column 4 → Amount (split into Inflow/Outflow)

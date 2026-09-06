@@ -65,8 +65,9 @@ class HanseticbankPdfStrategy extends BaseStrategy {
    * @param {object} transaction
    * @returns {Array}
    */
-  static lineTransform({ bookingDate, payee, fxInfo, card, amount }) {
-    const date     = bookingDate;
+  static lineTransform({ bookingDate, txnDate, payee, fxInfo, card, amount }) {
+    // Gutschrift (credit) rows have no Transaktionsdatum ("-"); fall back to Buchungsdatum.
+    const date     = (txnDate && txnDate !== '-') ? txnDate : bookingDate;
     const memo     = fxInfo;
     const outflow  = Math.abs(Math.min(amount, 0));
     const inflow   = Math.abs(Math.max(amount, 0));
