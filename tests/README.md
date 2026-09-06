@@ -11,7 +11,7 @@ npm run test:coverage # coverage
 ## Coverage
 
 - **DkbGirokonto2026Strategy.js**: 100%
-- **HanseticbankStrategy.js**: ~80%
+- **HanseaticbankJsonStrategy.js**: ~80%
 - **EpayMicroaccountStrategy.js**: ~85%
 - **DkbGirokontoStrategy.js**: 80%+
 
@@ -21,7 +21,7 @@ npm run test:coverage # coverage
 |----------|---------|-----------|---------|-------|
 | DkbGirokonto2026Strategy | 5 | 6 | 3 | 14 |
 | DkbGirokontoStrategy | 4 | - | - | 4 |
-| HanseticbankStrategy | 2 | 6 | 1 | 9 |
+| HanseaticbankJsonStrategy | 2 | 6 | 1 | 9 |
 | EpayMicroaccountStrategy | 3 | 8 | 1 | 12 |
 | Pattern Separation | - | - | 2 | 2 |
 

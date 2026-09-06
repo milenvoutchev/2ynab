@@ -1,11 +1,11 @@
 const { getFileContentsJson, writeOut } = require('../lib/file.js');
 const BaseStrategy = require('./BaseStrategy');
 
-class HanseaticbankStrategy extends BaseStrategy {
+class HanseaticbankJsonStrategy extends BaseStrategy {
 
   constructor() {
     super();
-    console.log('HanseaticbankStrategy');
+    console.log('HanseaticbankJsonStrategy');
   }
 
   /**
@@ -19,9 +19,9 @@ class HanseaticbankStrategy extends BaseStrategy {
       return;
     }
     const date = transaction.transactionDate || transaction.date;
-    const payee = HanseaticbankStrategy.getPayee(transaction);
+    const payee = HanseaticbankJsonStrategy.getPayee(transaction);
     const category = transaction.merchantData.category || "";
-    const memo = HanseaticbankStrategy.getMemo(transaction);
+    const memo = HanseaticbankJsonStrategy.getMemo(transaction);
     // Date,Payee,Category,Memo,Outflow,Inflow
     const result = [
       date,
@@ -49,7 +49,7 @@ class HanseaticbankStrategy extends BaseStrategy {
 
     console.log(`Transform: ${transactions.length}`);
 
-    const result = await super.transformAsync(transactions, HanseaticbankStrategy.lineTransform);
+    const result = await super.transformAsync(transactions, HanseaticbankJsonStrategy.lineTransform);
 
     writeOut(outFile, result);
     console.log(`Written: ${outFile}`);
@@ -96,4 +96,4 @@ class HanseaticbankStrategy extends BaseStrategy {
   }
 }
 
-module.exports = HanseaticbankStrategy;
+module.exports = HanseaticbankJsonStrategy;

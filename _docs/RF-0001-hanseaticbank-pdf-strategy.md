@@ -26,5 +26,5 @@ node 2ynab.js file.pdf HanseticbankPdf
 ```
 
 ## Backward Compatibility
-Existing JSON-based `HanseticbankStrategy` unchanged.
+Existing JSON-based `HanseaticbankJsonStrategy` unchanged.
 

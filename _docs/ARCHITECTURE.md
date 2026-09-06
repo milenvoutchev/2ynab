@@ -54,7 +54,7 @@ Each strategy only implements:
 - **DkbGirokontoStrategy** - Legacy DKB Girokonto (10-digit format)
 - **DkbGirokonto2026Strategy** - New DKB format with enhanced column mapping
 - **EpayMicroaccountStrategy** - Bulgarian ePay account statements
-- **HanseticbankStrategy** - HanseaticBank JSON statements
+- **HanseaticbankJsonStrategy** - HanseaticBank JSON statements
 - **HanseticbankPdfStrategy** - HanseaticBank PDF statements
 
 ## Benefits Achieved

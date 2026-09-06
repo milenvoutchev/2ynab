@@ -1,17 +1,17 @@
 const fs = require('fs');
 const path = require('path');
-const HanseticbankStrategy = require('../src/strategy/HanseticbankStrategy');
+const HanseaticbankJsonStrategy = require('../src/strategy/HanseaticbankJsonStrategy');
 
-describe('HanseticbankStrategy', () => {
+describe('HanseaticbankJsonStrategy', () => {
   describe('isMatch', () => {
     test('should match hanseaticbank.json', () => {
-      expect(HanseticbankStrategy.isMatch('hanseaticbank.json')).toBe(true);
+      expect(HanseaticbankJsonStrategy.isMatch('hanseaticbank.json')).toBe(true);
     });
 
     test('should not match other files', () => {
-      expect(HanseticbankStrategy.isMatch('hanseaticbank.csv')).toBe(false);
-      expect(HanseticbankStrategy.isMatch('hanseatic.json')).toBe(false);
-      expect(HanseticbankStrategy.isMatch('file.json')).toBe(false);
+      expect(HanseaticbankJsonStrategy.isMatch('hanseaticbank.csv')).toBe(false);
+      expect(HanseaticbankJsonStrategy.isMatch('hanseatic.json')).toBe(false);
+      expect(HanseaticbankJsonStrategy.isMatch('file.json')).toBe(false);
     });
   });
 
@@ -22,7 +22,7 @@ describe('HanseticbankStrategy', () => {
         amount: -10.00
       };
 
-      const result = HanseticbankStrategy.lineTransform(transaction);
+      const result = HanseaticbankJsonStrategy.lineTransform(transaction);
       expect(result).toBeUndefined();
     });
 
@@ -102,7 +102,7 @@ describe('HanseticbankStrategy', () => {
     ];
 
     test.each(transformTestCases)('should $name', ({ transaction, expectations }) => {
-      const result = HanseticbankStrategy.lineTransform(transaction);
+      const result = HanseaticbankJsonStrategy.lineTransform(transaction);
       if (expectations.date !== undefined) expect(result[0]).toBe(expectations.date);
       if (expectations.payee !== undefined) expect(result[1]).toBe(expectations.payee);
       if (expectations.category !== undefined) expect(result[2]).toBe(expectations.category);
@@ -112,7 +112,7 @@ describe('HanseticbankStrategy', () => {
   });
 
   describe('convert', () => {
-    const strategy = new HanseticbankStrategy();
+    const strategy = new HanseaticbankJsonStrategy();
     const sampleFile = path.join(__dirname, '../samples/hanseaticbank.json');
     const outputFile = path.join(__dirname, '../samples/test-hanseaticbank-output.csv');
 

@@ -5,7 +5,7 @@ const DkbCreditCardStrategy = require(`./DkbCreditCardStrategy.js`);
 const DkbGirokonto2026Strategy = require(`./DkbGirokonto2026Strategy.js`);
 const DkbGirokontoStrategy = require(`./DkbGirokontoStrategy.js`);
 const EpayMicroaccountStrategy = require(`./EpayMicroaccountStrategy.js`);
-const HanseticbankStrategy = require(`./HanseticbankStrategy.js`);
+const HanseaticbankJsonStrategy = require(`./HanseaticbankJsonStrategy.js`);
 const HanseticbankPdfStrategy = require(`./HanseticbankPdfStrategy.js`);
 
 module.exports = {
@@ -16,6 +16,6 @@ module.exports = {
   DkbGirokonto2026Strategy,
   DkbGirokontoStrategy,
   EpayMicroaccountStrategy,
-  HanseticbankStrategy,
+  HanseaticbankJsonStrategy,
   HanseticbankPdfStrategy,
 };
