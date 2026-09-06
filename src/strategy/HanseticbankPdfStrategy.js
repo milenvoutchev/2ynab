@@ -65,11 +65,9 @@ class HanseticbankPdfStrategy extends BaseStrategy {
    * @param {object} transaction
    * @returns {Array}
    */
-  static lineTransform({ bookingDate, type, payee, fxInfo, card, amount }) {
+  static lineTransform({ bookingDate, payee, fxInfo, card, amount }) {
     const date     = bookingDate;
-    const memo     = [type, fxInfo]
-                       .filter(Boolean)
-                       .join(' | ');
+    const memo     = fxInfo;
     const outflow  = Math.abs(Math.min(amount, 0));
     const inflow   = Math.abs(Math.max(amount, 0));
 

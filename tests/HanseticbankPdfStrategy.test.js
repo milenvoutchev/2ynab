@@ -78,12 +78,24 @@ describe('HanseticbankPdfStrategy', () => {
       expect(row[5]).toBe(684.63);                 // Inflow
     });
 
-    test('should include FX info in memo when present', () => {
+    test('should use FX info as memo when present, without any type label', () => {
       const tx = { bookingDate: '07.04.2026', type: 'Kartenumsatz', payee: 'MUSTERSHOP, BERLIN', fxInfo: '0,61 USD 0,53 EUR Umrechnungskurs: 1,15', card: '123\n4', amount: -0.53 };
       const row = HanseticbankPdfStrategy.lineTransform(tx);
-      expect(row[3]).toContain('Kartenumsatz');
-      expect(row[3]).toContain('0,61 USD 0,53 EUR');
+      expect(row[3]).toBe('0,61 USD 0,53 EUR Umrechnungskurs: 1,15');
+      expect(row[3]).not.toContain('Kartenumsatz');
       expect(row[3]).not.toContain('Karte:');
+    });
+
+    test('should produce an empty memo for a plain Kartenumsatz row with no FX info', () => {
+      const tx = { bookingDate: '26.03.2026', type: 'Kartenumsatz', payee: 'MUSTERSHOP, BERLIN', fxInfo: '', card: '123\n4', amount: -14.21 };
+      const row = HanseticbankPdfStrategy.lineTransform(tx);
+      expect(row[3]).toBe('');
+    });
+
+    test('should drop the type label from memo even for Gutschrift rows', () => {
+      const tx = { bookingDate: '31.03.2026', type: 'Gutschrift', payee: 'Kartenabrechnung 03/2026', fxInfo: 'Hanseatic Bank', card: '-', amount: 684.63 };
+      const row = HanseticbankPdfStrategy.lineTransform(tx);
+      expect(row[3]).toBe('Hanseatic Bank');
     });
 
     test('should omit card from memo when card is "-"', () => {
@@ -109,7 +121,12 @@ describe('HanseticbankPdfStrategy', () => {
 
       expect(content).toContain('Date,Payee,Category,Memo,Outflow,Inflow');
       expect(content).toContain('MUSTERSHOP, BERLIN');
-      expect(content).toContain('Kartenumsatz');
+      expect(content).toContain('Hanseatic Bank');
+      // Plain card-purchase rows carry an empty memo, and credit rows drop the
+      // redundant "Kartenumsatz"/"Gutschrift" type label entirely.
+      expect(content).toContain('26.03.2026,"MUSTERSHOP, BERLIN",,,14.21,0');
+      expect(content).not.toContain('Gutschrift');
+      expect(content).not.toContain('Kartenumsatz');
       expect(content).not.toContain('Karte:');
     });
 
