@@ -13,7 +13,7 @@ const files = [...new Set(patterns.flatMap(pattern => glob.sync(pattern)))]
 
 if (!files.length) {
   console.error('Reconciles DKB Girokonto Kontoauszug PDFs: extracts opening/closing Kontostand and a running balance per transaction.');
-  console.error('Usage: node dkb-girokonto-reconcile-report.js FILE... [--out=report.json]');
+  console.error('Usage: node dkb-girokonto-reconcile-report.js FILE... [--out=dkb-girokonto-reconcile-report.json]');
   console.error('Example: node dkb-girokonto-reconcile-report.js "Kontoauszug/*.pdf"');
   process.exitCode = 1;
   return;
