@@ -7,8 +7,8 @@
     "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage"
   },
   "dependencies": {
-    "csv": "^6.5.1",
-    "csv-parse": "^4.8.8",
+    "csv": "^6.6.3",
+    "csv-parse": "^7.0.2",
     "csv-stringify": "^2.1.0",
     "glob": "^7.2.3",
     "parse-decimal-number": "^1.0.0",
